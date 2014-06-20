@@ -1,0 +1,102 @@
+- @page_title = @user.name
+
+.main
+  .container
+    .row
+      .col-md-8.col-md-push-2
+        .panel
+          .panel-heading
+            h3.panel-title = @user.name
+          .panel-body
+            = form_for [:admin, @user], html: { multipart: true, class: 'user-form' } do |f|
+              = render 'share/flash_messages'
+              = render 'share/form_error_messages', form: f
+              .form-group
+                = f.label :avatar, class: 'control-label'
+                .user-image-uploader
+                  .image
+                    img.img-rounded alt="avatar" src=@user.avatar.bigger.url
+                  .uploader
+                    = f.file_field :avatar
+                    .checkbox
+                      label
+                        = f.check_box :remove_avatar
+                        '
+                        = t '.remove_avatar'
+              .form-group
+                = f.label :name
+                = f.text_field :name, class: 'form-control', tabIndex: 1
+              .form-group
+                = f.label :username
+                = f.text_field :username, class: 'form-control', tabIndex: 2
+
+              .form-group
+                = f.label :email
+                = f.text_field :email, class: 'form-control', tabIndex: 3
+              .form-group
+                .checkbox
+                  label
+                    = f.check_box :confirmed
+                    = t '.confirmed'
+              .form-group
+                = f.label :bio
+                = f.text_area :bio, class: 'form-control', tabIndex: 4
+              .form-group
+                = f.label :created_at
+                = f.text_field :created_at, class: 'form-control', disabled: true
+              - if @user.locked?
+                .form-group
+                  = f.label :locked_at
+                  = f.text_field :locked_at, class: 'form-control', disabled: true
+              .clearfix
+                = f.submit t('.save_changes'), class: 'btn btn-success', tabIndex: 5
+                .pull-right
+                  - if @user.locked?
+                    a.btn.btn-default href=lock_admin_user_path(@user) data-method="delete"
+                      = t '.unlock'
+                  - else
+                    a.btn.btn-default href=lock_admin_user_path(@user)  data-method="patch"
+                      = t '.lock'
+                  '
+                  a.btn.btn-danger href=admin_user_path(@user) data-method="delete" data-confirm=t('.permanently_delete_confirm')
+                    = t '.permanently_delete'
+
+      .col-md-3
+        .panel
+
+javascript:
+  $('form.user-form').validate({
+    rules: {
+      'user[name]': {
+        required: true,
+      },
+      'user[email]': {
+        required: true,
+        format: /^([^@\s]+)@((?:[a-z0-9-]+\.)+[a-z]{2,})$/i,
+        remote: '/users/check_email?id=#{@user.id}'
+      },
+      'user[username]': {
+        required: true,
+        remote: '/users/check_username?id=#{@user.id}',
+        format: /^[a-z0-9-]+$/i
+      },
+      'user[password]': {
+        required: true
+      }
+    },
+    messages: {
+      'user[name]': {
+        required: '#{@user.errors.generate_message :name, :blank}'
+      },
+      'user[email]': {
+        required: '#{@user.errors.generate_message :email, :blank}',
+        remote: '#{@user.errors.generate_message :email, :taken}',
+        format: '#{@user.errors.generate_message :email, :format}'
+      },
+      'user[username]': {
+        required: '#{@user.errors.generate_message :username, :blank}',
+        remote: '#{@user.errors.generate_message :username, :taken}',
+        format: '#{@user.errors.generate_message :username, :format}'
+      }
+    }
+  });

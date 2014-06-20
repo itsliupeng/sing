@@ -1,0 +1,25 @@
+- @page_title = t '.categories'
+
+.main
+  .container
+    = render 'share/flash_messages'
+
+    .row
+      .col-md-8.col-md-push-2
+        .panel
+          .panel-heading.claerfix
+            .pull-right
+              a.btn.btn-default.btn-success href=new_admin_category_path
+                = t '.new_category'
+            h2.panel-title
+              = t '.categories'
+          .panel-body
+            .list-group.list-group-campo
+              - @categories.each do |category|
+                a.list-group-item href=admin_category_path(category)
+                  .list-group-item-heading
+                    b = category.name
+                    '
+                    span.text-muted = category.slug
+                  .text-muted
+                    = t '.topics_count', count: category.topics_count

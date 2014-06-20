@@ -1,0 +1,21 @@
+.notifications-bell {
+  position: relative;
+
+  .badge {
+    background: $brand-primary;
+
+    @media (min-width: $grid-float-breakpoint) {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+  }
+}
+
+.notification {
+  &.read {
+    .list-group-item-link {
+      color: #999;
+    }
+  }
+}

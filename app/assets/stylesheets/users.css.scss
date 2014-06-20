@@ -1,0 +1,45 @@
+#user-confirm-required {
+  padding: $line-height-computed 0 0;
+
+  .alert {
+    margin: 0;
+  }
+
+  .modal-header {
+    border-bottom: none;
+  }
+}
+
+.user-profile {
+  background: white;
+  text-align: center;
+}
+
+.user-profile-avatar {
+  margin: ($line-height-computed / 2) 0;
+
+  img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.user-profile-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: $line-height-computed / 2;
+}
+
+.user-image-uploader {
+  @include clearfix();
+
+  .image {
+    width: 96px;
+    height: 96px;
+    float: left;
+  }
+
+  .uploader {
+    margin-left: 110px;
+  }
+}

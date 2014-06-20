@@ -1,0 +1,32 @@
+.list-group-item-avatar
+  img.img-rounded alt="avatar" src=comment.user.avatar.normal.url
+.list-group-item-content
+  .list-group-item-heading
+    a.comment-user href=user_link(comment.user)
+      b = comment.user.name
+      '
+      = "@#{comment.user.username}"
+      = ' · '
+      a href=comment_link(comment)
+        = time_ago_tag comment.created_at
+  = form_for comment, remote: true do |f|
+    .form-group
+      = markdown_area f, :body
+    = f.submit t('.save_changes'), class: 'btn btn-success', 'data-disable-with' => t('.save_changes')
+    '
+    a.btn.btn-default href=cancel_comment_path(comment) data-remote="true"
+      = t '.cancel'
+
+javascript:
+  $('#edit_comment_#{comment.id}').validate({
+    rules: {
+      'comment[body]': {
+        required: true
+      }
+    },
+    messages: {
+      'comment[body]': {
+        required: '#{@comment.errors.generate_message :body, :blank}'
+      }
+    }
+  });

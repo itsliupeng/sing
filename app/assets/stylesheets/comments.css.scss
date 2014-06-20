@@ -1,0 +1,56 @@
+.list-group-item.comment {
+  .list-group-item-heading {
+    margin-bottom: $line-height-computed / 2;
+    color: $gray-light;
+
+    a {
+      color: $gray-light;
+    }
+
+    .comment-user {
+      b {
+        color: $gray-dark;
+      }
+
+      &:hover {
+        text-decoration: none;
+
+        b {
+          color: $link-hover-color;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .list-group-item-actions {
+    .liked {
+      color: $brand-danger;
+
+      &:hover {
+        color: $brand-danger;
+      }
+    }
+  }
+
+  @media (max-width: $screen-xs) {
+    .list-group-item-avatar {
+      img {
+        height: 24px;
+        width: 24px;
+      }
+    }
+
+    .list-group-item-avatar + .list-group-item-content {
+      margin-left: 0;
+    }
+
+    .list-group-item-heading {
+      margin-left: 34px;
+      line-height: 24px;
+    }
+  }
+}
+
+.commentable {
+}

@@ -1,0 +1,39 @@
+= form_for @topic, remote: true, html: { class: 'topic-form' } do |f|
+  .row
+    .col-md-9
+      .form-group
+        = f.text_field :title, class: 'form-control', placeholder: t('.title'), tabIndex: 1
+    .col-md-3
+      .form-group
+        = f.collection_select :category_id, Category.order(topics_count: :desc), :id, :name, { include_blank: t('.no_category')}, class: 'form-control', tabIndex: 2
+  .form-group
+    = markdown_area f, :body, tabIndex: 3
+  - if topic.new_record?
+    = f.submit t('.create_topic'), class: 'btn btn-success', tabIndex: 4, 'data-disable-with' => t('.create_topic')
+  - else
+    = f.submit t('.save_changes'), class: 'btn btn-success', tabIndex: 4, 'data-disable-with' => t('.save_changes')
+    '
+    a.btn.btn-default href=topic_path(@topic) tabIndex="5"
+      = t '.cancel'
+
+- form_id = @topic.new_record? ? 'new_topic' : "edit_topic_#{@topic.id}"
+
+javascript:
+  $('##{form_id}').validate({
+    rules: {
+      'topic[title]': {
+        required: true
+      },
+      'topic[body]': {
+        required: true
+      }
+    },
+    messages: {
+      'topic[title]': {
+        required: '#{@topic.errors.generate_message :title, :blank}'
+      },
+      'topic[body]': {
+        required: '#{@topic.errors.generate_message :body, :blank}'
+      }
+    }
+  });

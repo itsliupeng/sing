@@ -1,0 +1,42 @@
+default: &default
+  title: Campo
+  host: localhost:3000
+
+  mailer:
+    # For localhost postfix
+    smtp_settings:
+      address: localhost
+      port: 25
+      enable_starttls_auto: false
+      #domain:
+      #user_name:
+      #password:
+      #authentication:
+    default_options:
+      from: no-reply@example.com
+    default_url_options:
+      host: localhost:3000
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    db: 0
+
+  elasticsearch:
+    host: localhost:9200
+
+development:
+  <<: *default
+  admin_emails:
+    - admin@example.com
+
+test:
+  <<: *default
+  admin_emails:
+    - admin@example.com
+
+production:
+  <<: *default
+
+  admin_emails:
+    # - admin@example.com

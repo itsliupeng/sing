@@ -1,0 +1,11 @@
+- @page_title = @category.name
+
+.main
+  .container
+    .row
+      .col-md-8.col-md-push-2
+        .panel
+          .panel-heading
+            h3.panel-title = @category.name
+          .panel-body
+            = render 'form', category: @category

@@ -1,0 +1,44 @@
+= form_for category, url: url_for([:admin, category]), html: { class: 'category-form' } do |f|
+  = render 'share/flash_messages'
+  = render 'share/form_error_messages', form: f
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: 'form-control', tabIndex: 1
+  .form-group
+    = f.label :slug
+    = f.text_field :slug, class: 'form-control', tabIndex: 2
+  .form-group
+    = f.label :description
+    = markdown_area f, :description, tabIndex: 3
+  - unless @category.new_record?
+    .form-group
+      = f.label :topics_count
+      = f.text_field :topics_count, class: 'form-control', disabled: true
+  .clearfix
+    - if category.new_record?
+      = f.submit t('.create_category'), class: 'btn btn-success', tabIndex: 4
+    - else
+      = f.submit t('.save_changes'), class: 'btn btn-success', tabIndex: 4
+      .pull-right
+        a.btn.btn-danger href=admin_category_path(@category) data-method="delete" data-confirm=t('.permanently_delete_confirm')
+          = t '.permanently_delete'
+
+javascript:
+  $('form.category-form').validate({
+    rules: {
+      'category[name]': {
+        required: true
+      },
+      'category[slug]': {
+        required: true
+      }
+    },
+    messages: {
+      'category[name]': {
+        required: '#{@category.errors.generate_message :name, :blank}'
+      },
+      'category[slug]': {
+        required: '#{@category.errors.generate_message :slug, :blank}'
+      }
+    }
+  });

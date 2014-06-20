@@ -1,0 +1,40 @@
+- @page_title = t '.topics'
+
+.sub-navbar
+  ul.nav.sub-navbar-nav
+    li class=('active' if action_name == 'index')
+      a href=admin_topics_path
+         = t '.normal'
+    li class=('active' if action_name == 'trashed')
+      a href=trashed_admin_topics_path
+         =t '.trashed'
+
+.main
+  .container
+    = render 'share/flash_messages'
+
+    .row
+      .col-md-8.col-md-push-2
+        .panel
+          .panel-heading
+            h2.panel-title
+              = t '.topics'
+          .panel-body
+            .list-group.list-group-campo
+              - @topics.each do |topic|
+                a.list-group-item href=admin_topic_path(topic)
+                  .list-group-item-heading
+                    = topic.id
+                    = '. '
+                    b = truncate topic.title
+                  .text-muted
+                    = topic.user.name
+                    = ' · '
+                    = time_ago_tag topic.created_at
+                    = ' · '
+                    = topic.comments_count
+                    '
+                    | comments
+          .panel-footer.clearfix
+            .pull-right
+              = paginate @topics, theme: 'campo'

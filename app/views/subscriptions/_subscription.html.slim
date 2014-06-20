@@ -1,0 +1,43 @@
+- subscription = subscribable.subscriptions.find_by(user: current_user)
+.btn-group id="subscription-for-#{subscribable.class.name.downcase}-#{subscribable.id}"
+  .btn.btn-default.dropdown-toggle data-toggle="dropdown"
+    - if subscription.nil?
+      i.fa.fa-eye
+      '
+      = t '.watch'
+      '
+      i.fa.fa-caret-down
+    - elsif subscription.subscribed?
+      i.fa.fa-eye-slash
+      '
+      = t '.unwatch'
+      '
+      i.fa.fa-caret-down
+    - elsif subscription.ignored?
+      i.fa.fa-ban
+      '
+      = t '.stop_ignoring'
+      '
+      i.fa.fa-caret-down
+  ul.dropdown-menu.dropdown-menu-subscription
+    li class=('selected' if subscription.nil?)
+      a href=polymorphic_url([subscribable, :subscription]) data-remote="true" data-method="delete"
+        .subscription-status
+          i.fa.fa-check
+        .subscription-description
+          label = t '.not_watching'
+          p = t '.you_only_receive_notifications_if_you_are_mentioned'
+    li class=('selected' if subscription && subscription.subscribed?)
+      a href=polymorphic_url([subscribable, :subscription], status: 'subscribed') data-remote="true" data-method="put"
+        .subscription-status
+          i.fa.fa-check
+        .subscription-description
+          label = t '.watching'
+          p = t '.you_will_receive_notifications_for_all_comments'
+    li class=('selected' if subscription && subscription.ignored?)
+      a href=polymorphic_url([subscribable, :subscription], status: 'ignored') data-remote="true" data-method="put"
+        .subscription-status
+          i.fa.fa-check
+        .subscription-description
+          label = t '.ignoring'
+          p = t '.you_do_not_receive_any_notifications'

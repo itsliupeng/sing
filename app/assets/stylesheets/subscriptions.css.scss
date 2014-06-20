@@ -1,0 +1,23 @@
+.dropdown-menu-subscription {
+  width: 360px;
+
+  li a {
+    white-space: normal;
+  }
+
+  .subscription-status {
+    float: left;
+    display: none;
+  }
+
+  li:hover,
+  li.selected {
+    .subscription-status {
+      display: block;
+    }
+  }
+
+  .subscription-description {
+    margin-left: 25px;
+  }
+}

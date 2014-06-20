@@ -1,0 +1,350 @@
+---
+zh-CN:
+  activerecord:
+    attributes:
+      category:
+        description: "描述"
+        name: "名称"
+        slug: "标识"
+        topics_count: "话题数"
+      comment:
+        commentable: "评论对象"
+        created_at: "创建于"
+        user: "用户"
+      topic:
+        comments_count: "评论数"
+        created_at: "创建于"
+        user: "用户"
+      user:
+        avatar: "头像"
+        bio: "简介"
+        created_at: "创建于"
+        email: Email
+        locale: "语言"
+        name: "全名"
+        password: "密码"
+        password_confirmation: "密码确认"
+        username: "用户名"
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              format: "无效的邮件格式"
+            username:
+              format: "只能使用字母、数字或 - 号，并且不能以 - 号开头"
+  admin:
+    attachments:
+      index:
+        attachments: "附件"
+        delete_confirm: "你确定要删除此附件吗？"
+    categories:
+      flashes:
+        successfully_created: "成功创建分类"
+        successfully_destroy: "成功彻底删除分类"
+        successfully_updated: "成功更新分类"
+      form:
+        create_category: "创建分类"
+        permanently_delete: "彻底删除"
+        permanently_delete_confirm: "你确定要彻底删除此分类吗？"
+        save_changes: "保存修改"
+      index:
+        categories: "分类"
+        new_category: "新分类"
+        topics_count: "%{count} 话题"
+      new:
+        new_category: "新分类"
+    comments:
+      flashes:
+        successfully_restored: "成功还原评论"
+        successfully_trashed: "成功删除评论"
+        successfully_updated: "成功更新评论"
+      index:
+        comments: "评论"
+        normal: "正常"
+        trashed: "回收站"
+      show:
+        comments: "评论"
+        delete: "删除"
+        delete_confirm: "你确定要删除此评论吗？"
+        restore: "还原"
+        save_changes: "保存修改"
+    dashboard:
+      show:
+        dashboard: "控制台"
+    topics:
+      flashes:
+        successfully_restored: "成功还原话题"
+        successfully_trashed: "成功删除话题"
+        successfully_updated: "成功更新话题"
+      index:
+        normal: "正常"
+        topics: "话题"
+        trashed: "回收站"
+      show:
+        delete: "删除"
+        delete_confirm: "你确定要删除次话题吗？"
+        no_category: "不分类"
+        restore: "还原"
+        save_changes: "保存修改"
+    users:
+      flashes:
+        successfully_destroy: "成功彻底删除用户"
+        successfully_locked: "成功锁定用户"
+        successfully_unlocked: "成功解锁用户"
+        successfully_updated: "成功更新用户"
+      index:
+        locked: "被锁定"
+        normal: "正常"
+        users: "用户"
+      show:
+        confirmed: "邮件确认"
+        lock: "锁定"
+        permanently_delete: "彻底删除"
+        permanently_delete_confirm: "你确定要彻底删除此用户吗？"
+        remove_avatar: "移除头像"
+        save_changes: "保存修改"
+        unlock: "解锁"
+  comments:
+    comment:
+      delete_confirm: "你确定要删除此评论吗？"
+    form:
+      cancel: "取消"
+      save_changes: "保存修改"
+  helpers:
+    comments:
+      deleted_entry: "[已删除内容]"
+  karminari:
+    campo:
+      paginator:
+        page: "第 %{page} 页"
+  layouts:
+    admin:
+      admin: "%{name} 管理"
+      attachments: "附件"
+      categories: "分类"
+      comments: "评论"
+      topics: "话题"
+      users: "用户"
+    application:
+      comments: "评论"
+      community: "社区"
+      likes: "收藏"
+      logout: "退出"
+      profile: "个人资料"
+      settings: "设置"
+      sign_in: "登录"
+      sign_up: "注册"
+      topics: "话题"
+  locales:
+    en: "英文"
+    zh-CN: "简体中文"
+    zh-TW: "正体中文"
+  markdown:
+    area:
+      attach_images_by: "添加图片"
+      preview: "预览"
+      select_them: "选择文件"
+      write: "编辑"
+  notification_mailer:
+    comment:
+      view_it_on_web: "查看网页"
+    mention:
+      view_it_on_web: "查看网页"
+  notifications:
+    index:
+      delete_all: "删除所有"
+      delete_all_confirm: "你确定要删除所有通知吗？"
+      no_notifications: "没有通知"
+      notifications: "通知"
+    notification:
+      comment:
+        commented_on: "评论了"
+      mention:
+        mentioned_you_on: "提及你于"
+  passwords:
+    flashes:
+      successfully_update: "密码更新成功"
+      token_invalid: "验证码无效"
+      user_email_not_found: "没有找到此用户"
+  sessions:
+    access_limiter:
+      are_you: "你是否"
+      forgot_password: "忘记密码？"
+      try_too_many_times: "尝试次数过多"
+    flashes:
+      incorrect_user_name_or_password: "错误的用户名或密码"
+    new:
+      forgot_password: "忘记密码？"
+      login: "帐号"
+      password: "密码"
+      sign_in: "登录"
+      username_or_email: "用户名或邮箱"
+  settings:
+    accounts:
+      flashes:
+        successfully_updated: "成功更新帐号"
+      show:
+        account: "帐号"
+        account_settings: "帐号设置"
+        current_password: "当前密码"
+        save_changes: "保存修改"
+    flashes:
+      incorrect_current_password: "当前密码错误"
+    notifications:
+      flashes:
+        successfully_updated: "更新成功"
+      show:
+        comment: "评论"
+        email: Email
+        mention: "提及"
+        notifications: "通知"
+        notifications_settings: "通知设置"
+        save_changes: "保存修改"
+        web: "网站"
+        when_receive_new_comment_on_watching_items: "当你关注的内容有新回复"
+        when_someone_mention_you_with_username: "当有人提到你的用户名"
+    passwords:
+      flashes:
+        successfully_updated: "成功更新密码"
+      show:
+        current_password: "当前密码"
+        password: "密码"
+        password_settings: "密码设置"
+        save_changes: "保存修改"
+    profiles:
+      flashes:
+        successfully_updated: "成功更新个人资料"
+      show:
+        profile: "个人资料"
+        profile_settings: "个人资料设置"
+        save_changes: "保存修改"
+    sidebar:
+      account: "帐号"
+      notifications: "通知"
+      password: "密码"
+      profile: "个人资料"
+  share:
+    user_confirm_required:
+      change_email: "修改邮件地址"
+      description: "确认你的邮件地址方可访问所有功能。确认邮件已发往 %{email} 。"
+      resend_email: "重新发送邮件"
+  subscriptions:
+    subscription:
+      ignoring: "忽略"
+      not_watching: "未关注"
+      stop_ignoring: "停止忽略"
+      unwatch: "不关注"
+      watch: "关注"
+      watching: "关注中"
+      you_do_not_receive_any_notifications: "你不会收到任何通知"
+      you_only_receive_notifications_if_you_are_mentioned: "你只会在被提及的时候收到通知"
+      you_will_receive_notifications_for_all_comments: "每当有新评论时你都会收到通知"
+  topics:
+    edit:
+      edit_topic: "编辑话题"
+    form:
+      cancel: "取消"
+      create_topic: "创建话题"
+      no_category: "不分类"
+      save_changes: "保存修改"
+      title: "标题"
+    index:
+      all_categories: "所有分类"
+      create_topic: "创建话题"
+      hot: "热门"
+      hot_topics: "热门话题"
+      newest: "最新"
+      newest_topics: "最新话题"
+      no_topic_yet: "还没有话题"
+    new:
+      new_topic: "新话题"
+    search:
+      no_matching_results: "没有匹配结果"
+      search: "搜索"
+    show:
+      add_this_comment: "添加评论"
+      comments: "评论"
+      delete_confirm: "你确定要删除此话题吗？"
+      login: "登录"
+      no_comment_yet: "还没有评论"
+      no_more_topics: "没有更多话题"
+      or: "或"
+      related_topics: "相关话题"
+      sign_up: "注册"
+      to_comment: "后发表评论"
+      your_account_had_been_locked: "你的帐号已被锁定"
+    topic:
+      comments_count: "%{count} 条评论"
+      views_count: "%{count} 次浏览"
+  user_mailer:
+    confirmation:
+      subject: "邮箱确认"
+      text_body: |
+        有人使用你的邮箱在 %{host} 注册帐号，如果不是你，请忽略此邮件。
+
+        点击下面的链接确认邮箱地址：
+
+        %{url}
+    password_reset:
+      subject: "密码重置"
+      text_body: |
+        有人请求重置你在 %{host} 的密码，如果不是你，请忽略此邮件。
+
+        点击下面的链接来选择一个新密码：
+
+        %{url}
+  users:
+    comments:
+      index:
+        comments: "评论"
+        likes: "收藏"
+        no_comment_yet: "还没有评论"
+        publish: "发布"
+        user_s_comments: "%{name} 的评论"
+    confirmations:
+      confirm_success: "恭喜，你的邮件地址已确认成功。"
+      create:
+        resend_success: "确认邮件已发送。"
+      limiter:
+        resend_limiter: "一分钟只能发送一次确认邮件。"
+      new:
+        click_resend_button_to_resend_confirmation_email: "点击“重新发送邮件”按钮重发确认邮件。"
+        need_confirm_email: "需要验证邮件地址"
+      show:
+        confirm_fail: "确认失败"
+        confirmation_toke_invalid_or_expired_please_resend: "确认码无效或已过期，请重新发送确认邮件。"
+    likes:
+      index:
+        no_comment_yet: "还没有评论"
+    new:
+      choose_a_password: "选一个密码"
+      create_account: "创建帐号"
+      pick_a_username: "挑一个用户名"
+      sign_up: "注册"
+      your_email: "你的邮箱地址"
+      your_full_name: "你的全名"
+    passwords:
+      edit:
+        password_reset: "密码重置"
+        save_changes: "保存修改"
+      new:
+        email: Email
+        password_reset: "密码重置"
+        send_reset_email: "发送重置密码"
+        your_email: "你的 Email 地址"
+      show:
+        password_reset: "密码重置"
+        password_reset_email_has_been_sent_message: "密码重置邮件已发送，请注意查收。"
+    profile:
+      edit_profile: "编辑个人资料"
+    sidebar:
+      comments: "评论"
+      topics: "话题"
+    topics:
+      index:
+        likes: "收藏"
+        no_topic_yet: "还没有话题"
+        publish: "发布"
+        topics: "话题"
+        user_s_topics: "%{name} 的话题"

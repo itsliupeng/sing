@@ -1,0 +1,47 @@
+doctype html
+html
+  head
+    title
+      = @page_title ? "#{@page_title} - #{t('.admin', name: CONFIG['title'])}" : t('.admin', name: CONFIG['title'])
+    = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
+    = javascript_include_tag "application", "data-turbolinks-track" => true
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    = csrf_meta_tags
+    - if login?
+      javascript:
+        campo.currentUser = {
+          id: #{current_user.id}
+        };
+
+  body
+    nav.navbar.navbar-campo.navbar-static-top.navbar-inverse
+      .container
+        .navbar-header
+          a.navbar-brand href=admin_root_path
+            = t '.admin', name: CONFIG['title']
+        ul.nav.navbar-nav.navbar-right
+          li
+            a href=root_path
+              i.fa.fa-sign-out
+          li.navbar-toggle
+            a.tiem type="button" data-toggle="collapse" data-target="#navbar"
+              i.fa.fa-bars
+        #navbar.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li class=('active' if controller_name == 'users')
+              a href=admin_users_path
+                = t '.users'
+            li class=('active' if controller_name == 'categories')
+              a href=admin_categories_path
+                = t '.categories'
+            li class=('active' if controller_name == 'topics')
+              a href=admin_topics_path
+                = t '.topics'
+            li class=('active' if controller_name == 'comments')
+              a href=admin_comments_path
+                = t '.comments'
+            li class=('active' if controller_name == 'attachments')
+              a href=admin_attachments_path
+                = t '.attachments'
+
+    = yield
