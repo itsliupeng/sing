@@ -20,8 +20,7 @@ html
       .container
         .navbar-header
           a.navbar-brand href=root_path
-            <!-- = CONFIG['title'] -->
-            = "liupeng_test"
+            = CONFIG['title']
         ul.nav.navbar-nav.navbar-right
           - if login?
             li class=('active' if request.original_fullpath =~ /^\/notifications/)
