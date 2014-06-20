@@ -13,7 +13,7 @@
 set -e
 set -u
 
-APP_ROOT=/var/www/campo/current
+APP_ROOT=/var/www/singflying/current
 USER=deploy
 
 TIMEOUT=${TIMEOUT-60}

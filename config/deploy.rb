@@ -1,8 +1,8 @@
 # config valid only for Capistrano 3.1
 lock '3.1.0'
 
-set :application, 'campo'
-set :repo_url, 'https://github.com/dp90219/singflying.git'
+set :application, 'singflying'
+set :repo_url, 'https://github.com/dp90219/sing.git'
 set :deploy_to, -> { "/var/www/#{fetch(:application)}" }
 set :rails_env, 'production'
 
