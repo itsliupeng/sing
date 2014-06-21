@@ -14,7 +14,6 @@ html
         campo.currentUser = {
           id: #{current_user.id}
         };
-    = render 'layouts/google'
 
   body
     nav.navbar.navbar-static-top
@@ -76,3 +75,5 @@ html
     - if login? and !current_user.confirmed?
       = render 'share/user_confirm_required'
     = yield
+    = render 'layouts/baidu'
+    = render 'layouts/google'
