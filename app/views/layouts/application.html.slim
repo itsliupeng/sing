@@ -8,6 +8,9 @@ html
     - if I18n.locale != 'en'
       = javascript_include_tag "locales/#{I18n.locale}"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
+    meta name="keywords" content="singflying,飞歌,liupeng"
+    meta name="description" content="Welcome to singflying. You can talk whatever you like and share whatever you want here."
+    meta name="author" content="liupeng"
     = csrf_meta_tags
     - if login?
       javascript:
@@ -75,4 +78,3 @@ html
     - if login? and !current_user.confirmed?
       = render 'share/user_confirm_required'
     = yield
-    = render 'layouts/baidu'
