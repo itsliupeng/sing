@@ -1,6 +1,7 @@
 #= require jquery
 #= require jquery_ujs
 #= require turbolinks
+#= require social-share-button
 #= require bootstrap
 #= require jquery.autosize
 #= require jquery.validate
