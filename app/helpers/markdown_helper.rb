@@ -43,21 +43,21 @@ module MarkdownHelper
 
   def markdown(text)
     renderer = HTMLRender.new(hard_wrap: true,
-                              filter_html: true,
                               link_attributes: { rel: 'nofollow' })
 
     markdown = Redcarpet::Markdown.new(renderer,
                                        autolink: true,
                                        space_after_headers: true,
-                                       fenced_code_blocks: true)
+                                       fenced_code_blocks: true,
+                                      )
 
     markdown.render(text)
   end
 
   def markdown_format(text)
     sanitize(markdown_text_replace(markdown(text)),
-             tags: %w(p br img h1 h2 h3 h4 blockquote pre code strong em a ul ol li span),
-             attributes: %w(href src class title alt target rel))
+             tags: %w(p br img h1 h2 h3 h4 blockquote pre code strong em a ul ol li span iframe embed),
+             attributes: %w(href src class title alt target rel height width frameborder allowfullscreen allowFullScreen align quality type allowScriptAccess))
   end
 
   def markdown_area(form, name, options = {})
