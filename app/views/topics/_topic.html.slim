@@ -5,6 +5,8 @@
     .list-group-item-content
       .list-group-item-heading
         b = topic.title
+        span.badge
+          = topic.views_count
       .text-muted
         = topic.user.name
         = ' · '
@@ -14,5 +16,3 @@
           = topic.category.name
         = ' · '
         = t '.comments_count', count: topic.comments_count
-        = ' · '
-        = t '.views_count', count: topic.views_count
