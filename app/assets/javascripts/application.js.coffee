@@ -8,6 +8,7 @@
 #= require jquery.timeago
 #= require nprogress
 #= require campo
+#= require simditor-all
 #= require_tree ./plugins
 
 $(document).on 'page:update', ->
