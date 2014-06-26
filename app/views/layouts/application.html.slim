@@ -76,7 +76,8 @@ html
           ul.nav.navbar-nav
             li class=('active' if request.original_fullpath =~ /^\/topics/)
               a href=topics_path
-                = t '.community'
+                <!-- = t '.community' -->
+                = "社交"
 
     - if login? and !current_user.confirmed?
       = render 'share/user_confirm_required'
