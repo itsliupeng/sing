@@ -43,6 +43,8 @@ class TopicsController < ApplicationController
     @topic = Topic.find params[:id]
     @topic.increment_views_count
 
+    impressionist @topic
+
     if params[:comment_id] and comment = @topic.comments.find_by(id: params.delete(:comment_id))
       params[:page] = comment.page
     end

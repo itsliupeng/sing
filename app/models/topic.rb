@@ -1,4 +1,5 @@
 class Topic < ActiveRecord::Base
+  is_impressionable
   include Likeable
   include Trashable
   include Subscribable
