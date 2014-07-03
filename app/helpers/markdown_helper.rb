@@ -42,7 +42,7 @@ module MarkdownHelper
   end
 
   def markdown(text)
-    renderer = HTMLRender.new(hard_wrap: true,
+    renderer = HTMLRender.new(hard_wrap: false,
                               link_attributes: { rel: 'nofollow' })
 
     markdown = Redcarpet::Markdown.new(renderer,
