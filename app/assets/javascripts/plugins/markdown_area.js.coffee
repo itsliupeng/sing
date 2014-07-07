@@ -46,9 +46,9 @@ $(document).on 'change', '.markdown-area .file-upload input[type=file]', (event)
       success: (data) ->
         pos = textarea[0].selectionStart
         imagePos = textarea.val().indexOf(imageTag)
-        textarea.val(textarea.val().replace(imageTag, "![#{fileName}](#{data.url})")).trigger('autosize.resize')
+        textarea.val(textarea.val().replace(imageTag, "![#{fileName}](#{data.file_path})")).trigger('autosize.resize')
         if imagePos < pos
-          textarea[0].selectionStart = textarea[0].selectionEnd = pos + data.url.length
+          textarea[0].selectionStart = textarea[0].selectionEnd = pos + data.file_path.length
         else
           textarea[0].selectionStart = textarea[0].selectionEnd = pos
 
