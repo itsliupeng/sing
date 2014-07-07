@@ -268,7 +268,7 @@
       var formData, k, v, _ref,
         _this = this;
       formData = new FormData();
-      formData.append("upload_file", file.obj);
+      formData.append("attachment[file]", file.obj);
       formData.append("original_filename", file.name);
       if (file.params) {
         _ref = file.params;
