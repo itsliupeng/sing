@@ -87,6 +87,9 @@ gem 'social-share-button'
 # statitics viewed_count
 gem 'impressionist'
 
+# qiniu
+gem 'qiniu'
+
 
 group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/jonleighton/spring
