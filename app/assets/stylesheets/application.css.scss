@@ -16,9 +16,13 @@ $font-size-base: 15px;
 @import "markdown";
 @import "simditor";
 @import "video-js";
+@import "welcome";
 
 body {
   background: #eee;
+  img {
+    margin: auto;
+  }
 }
 
 .text-hide-overflow {
