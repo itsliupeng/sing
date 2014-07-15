@@ -7,9 +7,16 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
 
+  after_filter :user_activity
+
+
   private
 
   class AccessDenied < Exception; end
+
+  def user_activity
+    current_user.try :touch
+  end
 
   def login_required
     unless login?

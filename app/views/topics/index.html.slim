@@ -37,8 +37,12 @@
                   = t '.no_topic_yet'
           - if @topics.total_pages > 1
             .panel-footer.clearfix
+              .pull-left
+                p.text-muted.user_count
+                  = "当前有 #{User.online.count} 位注册用户在线"
               .pull-right
                 = paginate @topics, theme: 'campo'
+
 
       .col-md-3
         = render 'search_form'
