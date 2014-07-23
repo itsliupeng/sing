@@ -23,6 +23,12 @@ body {
   img {
     margin: auto;
   }
+  #arrow-up {
+    position: fixed;
+    top: 90%;
+    left: 75%;
+
+  }
 }
 
 .text-hide-overflow {
@@ -33,6 +39,14 @@ body {
 .footer {
   text-align: center;
   .user_count {
-  
   }
 }
+
+.show {
+  opacity: 0;
+}
+
+.hide {
+  opacity: 1;
+}
+
