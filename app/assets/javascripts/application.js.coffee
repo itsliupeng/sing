@@ -24,12 +24,12 @@ $(document).on 'page:restore', ->
   NProgress.remove()
 
 $(document).on 'page:change', ->
-  $('#arrow-up').on 'click', ->
+  $('#arrow-up').on 'click', (event) ->
     # $(document).scrollTop(0)
+    event.preventDefault()
     $("html, body").animate({ scrollTop: 0 }, "slow")
 
 $(document).scroll ->
-
   if $(document).scrollTop() < 200
     $('#arrow-up').removeClass('show')
   else
