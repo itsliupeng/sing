@@ -8,12 +8,16 @@ class AdminConstraint
 end
 
 Rails.application.routes.draw do
+  get 'welcome/index'
+
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
 
   post 'markdown/preview', to: 'markdown#preview'
+
+  get 'users' => 'users#index'
 
   resources :users, only: [:create] do
     collection do
@@ -66,7 +70,7 @@ Rails.application.routes.draw do
 
   resources :attachments, only: [:create]
 
-  root 'topics#index'
+  root 'welcome#index'
 
   scope path: '~:username', module: 'users', as: 'user' do
     resources :topics, only: [:index] do

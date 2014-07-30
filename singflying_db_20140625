@@ -1,0 +1,1022 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: attachments; Type: TABLE; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE TABLE attachments (
+    id integer NOT NULL,
+    user_id integer,
+    file character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.attachments OWNER TO deploy;
+
+--
+-- Name: attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: deploy
+--
+
+CREATE SEQUENCE attachments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.attachments_id_seq OWNER TO deploy;
+
+--
+-- Name: attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: deploy
+--
+
+ALTER SEQUENCE attachments_id_seq OWNED BY attachments.id;
+
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE TABLE categories (
+    id integer NOT NULL,
+    name character varying(255),
+    slug character varying(255),
+    description text,
+    topics_count integer DEFAULT 0,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.categories OWNER TO deploy;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: deploy
+--
+
+CREATE SEQUENCE categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_id_seq OWNER TO deploy;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: deploy
+--
+
+ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
+
+
+--
+-- Name: comments; Type: TABLE; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE TABLE comments (
+    id integer NOT NULL,
+    user_id integer,
+    commentable_id integer,
+    commentable_type character varying(255),
+    body text,
+    likes_count integer DEFAULT 0,
+    trashed boolean DEFAULT false,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.comments OWNER TO deploy;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: deploy
+--
+
+CREATE SEQUENCE comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.comments_id_seq OWNER TO deploy;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: deploy
+--
+
+ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
+
+
+--
+-- Name: likes; Type: TABLE; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE TABLE likes (
+    id integer NOT NULL,
+    user_id integer,
+    likeable_id integer,
+    likeable_type character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.likes OWNER TO deploy;
+
+--
+-- Name: likes_id_seq; Type: SEQUENCE; Schema: public; Owner: deploy
+--
+
+CREATE SEQUENCE likes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.likes_id_seq OWNER TO deploy;
+
+--
+-- Name: likes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: deploy
+--
+
+ALTER SEQUENCE likes_id_seq OWNED BY likes.id;
+
+
+--
+-- Name: notifications; Type: TABLE; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE TABLE notifications (
+    id integer NOT NULL,
+    user_id integer,
+    subject_id integer,
+    subject_type character varying(255),
+    name character varying(255),
+    read boolean DEFAULT false,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.notifications OWNER TO deploy;
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: deploy
+--
+
+CREATE SEQUENCE notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.notifications_id_seq OWNER TO deploy;
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: deploy
+--
+
+ALTER SEQUENCE notifications_id_seq OWNED BY notifications.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE TABLE schema_migrations (
+    version character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.schema_migrations OWNER TO deploy;
+
+--
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE TABLE subscriptions (
+    id integer NOT NULL,
+    user_id integer,
+    subscribable_id integer,
+    subscribable_type character varying(255),
+    status integer DEFAULT 0,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.subscriptions OWNER TO deploy;
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: deploy
+--
+
+CREATE SEQUENCE subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.subscriptions_id_seq OWNER TO deploy;
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: deploy
+--
+
+ALTER SEQUENCE subscriptions_id_seq OWNED BY subscriptions.id;
+
+
+--
+-- Name: topics; Type: TABLE; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE TABLE topics (
+    id integer NOT NULL,
+    user_id integer,
+    category_id integer,
+    title character varying(255),
+    body text,
+    hot double precision DEFAULT 0.0,
+    comments_count integer DEFAULT 0,
+    likes_count integer DEFAULT 0,
+    subscriptions_count integer DEFAULT 0,
+    trashed boolean DEFAULT false,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    views_count integer DEFAULT 0
+);
+
+
+ALTER TABLE public.topics OWNER TO deploy;
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: deploy
+--
+
+CREATE SEQUENCE topics_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.topics_id_seq OWNER TO deploy;
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: deploy
+--
+
+ALTER SEQUENCE topics_id_seq OWNED BY topics.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    name character varying(255),
+    email character varying(255),
+    username character varying(255),
+    password_digest character varying(255),
+    bio text,
+    avatar character varying(255),
+    locale character varying(255),
+    locked_at timestamp without time zone,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    confirmed boolean DEFAULT false,
+    send_comment_email boolean DEFAULT true,
+    send_comment_web boolean DEFAULT true,
+    send_mention_email boolean DEFAULT true,
+    send_mention_web boolean DEFAULT true
+);
+
+
+ALTER TABLE public.users OWNER TO deploy;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: deploy
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO deploy;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: deploy
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY attachments ALTER COLUMN id SET DEFAULT nextval('attachments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY likes ALTER COLUMN id SET DEFAULT nextval('likes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY notifications ALTER COLUMN id SET DEFAULT nextval('notifications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY subscriptions ALTER COLUMN id SET DEFAULT nextval('subscriptions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY topics ALTER COLUMN id SET DEFAULT nextval('topics_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: deploy
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Data for Name: attachments; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY attachments (id, user_id, file, created_at, updated_at) FROM stdin;
+2	1	sw1.png	2014-06-17 11:11:05.828488	2014-06-17 11:11:05.828488
+3	1	switchy.PNG	2014-06-17 11:12:05.837999	2014-06-17 11:12:05.837999
+4	1	swichy1.png	2014-06-17 11:12:32.125534	2014-06-17 11:12:32.125534
+5	6	large_Bmr4_93029f206112.jpg	2014-06-17 11:12:56.018307	2014-06-17 11:12:56.018307
+6	1	ss_usa.PNG	2014-06-17 11:13:15.108915	2014-06-17 11:13:15.108915
+7	1	switchy.PNG	2014-06-17 11:15:56.395926	2014-06-17 11:15:56.395926
+8	1	swichy1.png	2014-06-17 11:21:06.32641	2014-06-17 11:21:06.32641
+10	1	Broad-billed-Hummingbird.jpeg	2014-06-17 12:34:15.815247	2014-06-17 12:34:15.815247
+14	1	1220869_125.jpg	2014-06-17 15:46:13.783518	2014-06-17 15:46:13.783518
+15	1	1220869_125.jpg	2014-06-18 14:22:33.635254	2014-06-18 14:22:33.635254
+16	6	large_8wJo_92607n206112.jpg	2014-06-19 09:54:24.358922	2014-06-19 09:54:24.358922
+17	1	jewel-icon.png	2014-06-20 10:25:29.109057	2014-06-20 10:25:29.109057
+19	1	ca1349540923dd548ff75b35d109b3de9d8248e3.jpg	2014-06-20 10:54:22.274713	2014-06-20 10:54:22.274713
+20	6	large_NQ2B_92653n206112.jpg	2014-06-20 16:47:42.155416	2014-06-20 16:47:42.155416
+21	1	ca1349540923dd548ff75b35d109b3de9d8248e3.jpg	2014-06-21 05:38:22.81691	2014-06-21 05:38:22.81691
+22	1	96806342_2.jpg	2014-06-22 02:54:08.974206	2014-06-22 02:54:08.974206
+23	1	_____2014-06-22_16.44.45.png	2014-06-22 08:46:32.986974	2014-06-22 08:46:32.986974
+24	1	_____2014-06-22_16.44.51.png	2014-06-22 08:46:39.972507	2014-06-22 08:46:39.972507
+25	1	OPLicenses2.jpg	2014-06-22 09:38:01.1672	2014-06-22 09:38:01.1672
+26	1	Screenshot_from_2014-06-22_20_26_16.png	2014-06-22 12:26:42.559912	2014-06-22 12:26:42.559912
+27	1	Screenshot_from_2014-06-22_20_47_01.png	2014-06-22 13:03:14.799364	2014-06-22 13:03:14.799364
+28	1	Screenshot_from_2014-06-22_20_48_55.png	2014-06-22 13:03:20.915131	2014-06-22 13:03:20.915131
+29	1	Screenshot_from_2014-06-22_20_55_24.png	2014-06-22 13:03:47.449	2014-06-22 13:03:47.449
+30	1	Screenshot_from_2014-06-22_20_57_53.png	2014-06-22 13:03:55.60866	2014-06-22 13:03:55.60866
+31	1	Screenshot_from_2014-06-22_21_09_24.png	2014-06-22 13:10:18.242154	2014-06-22 13:10:18.242154
+33	1	Screenshot_from_2014-06-23_09_17_56.png	2014-06-23 01:18:11.447443	2014-06-23 01:18:11.447443
+34	1	_____2014-06-23_13.38.48.png	2014-06-23 05:39:08.138637	2014-06-23 05:39:08.138637
+35	1	_____2014-06-23_13.48.00.png	2014-06-23 05:48:21.197067	2014-06-23 05:48:21.197067
+\.
+
+
+--
+-- Name: attachments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+--
+
+SELECT pg_catalog.setval('attachments_id_seq', 35, true);
+
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY categories (id, name, slug, description, topics_count, created_at, updated_at) FROM stdin;
+7	医电之家	yidian	西安交通大学生物医学工程2008级	0	2014-06-17 11:40:21.063081	2014-06-17 11:40:21.063081
+8	伟大的29班	class29	桓台一中空前绝后的29班	0	2014-06-17 11:42:19.164895	2014-06-17 11:42:19.164895
+9	逝去的8班	class8	新城中学2001级8班	0	2014-06-17 15:27:49.800747	2014-06-17 15:27:49.800747
+1	HPEC	hpec	High Performance Embedded Computing Lab. 涉密的大大的不要\r\n	1	2014-06-17 09:00:42.340142	2014-06-18 06:47:13.673095
+4	无主题分享	notheme	Just write something and share it.	7	2014-06-17 10:07:30.573622	2014-06-17 10:07:30.573622
+6	七嘴八舌	talkmore	没有营养，莞尔一笑的帖子，管理员会将其归类于此	10	2014-06-17 11:28:58.917345	2014-06-17 11:28:58.917345
+3	邢庙小学	xingmiaoschool	邢庙小学1997级	1	2014-06-17 09:04:51.117123	2014-06-17 09:04:51.117123
+2	医电81	yidian81	西安交通大学生物医学工程2008级1班	2	2014-06-17 09:01:42.709508	2014-06-17 09:01:42.709508
+5	关于本站	siteinfo	本站点的介绍和规则	12	2014-06-17 10:23:45.328283	2014-06-17 10:23:45.328283
+\.
+
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+--
+
+SELECT pg_catalog.setval('categories_id_seq', 9, true);
+
+
+--
+-- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY comments (id, user_id, commentable_id, commentable_type, body, likes_count, trashed, created_at, updated_at) FROM stdin;
+1	1	1	Topic	1	0	f	2014-06-17 08:44:47.376711	2014-06-17 08:44:47.376711
+2	1	1	Topic	@liupeng #1 2	1	f	2014-06-17 08:44:52.867167	2014-06-17 08:44:52.867167
+3	1	1	Topic	@liupeng 3	0	f	2014-06-17 08:45:33.638507	2014-06-17 08:45:33.638507
+4	1	3	Topic	@season 我将你的帖子归类于七嘴八舌了。。。	0	f	2014-06-17 11:30:31.701751	2014-06-17 11:30:31.701751
+5	7	4	Topic	密码是？	0	f	2014-06-17 12:22:34.52427	2014-06-17 12:22:34.52427
+6	1	4	Topic	@a #5 现在是 liupeng!， 下载完客户端不需要任何修改就可以用的， 配置里面已经默认配置好了	0	f	2014-06-17 12:24:19.435417	2014-06-17 12:24:35.413061
+7	7	5	Topic	#### 测试\r\n``` python\r\n@requires_authorization\r\ndef somefunc(param1='', param2=0):\r\n    '''A docstring'''\r\n    if param1 > param2: # interesting\r\n        print 'Greater'\r\n    return (param2 - param1 + 1) or None\r\nclass SomeClass:\r\n    pass\r\n>>> message = '''interpreter\r\n... prompt'''\r\n```	0	f	2014-06-17 12:24:51.360696	2014-06-17 12:24:51.360696
+8	1	5	Topic	@a #7 哇， 你好厉害，可是我不知道你的真名是。。。，能用真名吗？这样大家都会相互了解。\r\n你是一个 pythoner 啊，有机会多交流啊	0	f	2014-06-17 12:26:22.908615	2014-06-17 12:26:22.908615
+9	7	5	Topic	`不懂编程` `不会语言` `只是复制了几行代码` `见笑了`\r\n	0	f	2014-06-17 12:34:19.044769	2014-06-17 12:34:19.044769
+10	7	2	Topic	`每一个域名都一段不为人知的往事`	0	f	2014-06-17 12:42:27.970928	2014-06-17 12:42:27.970928
+11	1	2	Topic	@a #10 选域名怎样让用户记得住，还有在 google 的 pagerank 中分数高点， 听说都很有讲究的。我只知道 .com 的域名默认会高一点，但是好的域名都基本已经被注册了，卖的很贵\r\n	0	f	2014-06-17 12:45:58.506153	2014-06-17 12:45:58.506153
+12	9	3	Topic	dui	0	f	2014-06-17 13:10:46.841909	2014-06-17 13:10:46.841909
+13	10	2	Topic	刘老师v5	0	f	2014-06-17 13:14:43.782844	2014-06-17 13:14:43.782844
+14	9	4	Topic	好东西啊	0	f	2014-06-17 13:17:49.590199	2014-06-17 13:17:49.590199
+15	1	7	Topic	thanks, 我拿了一个甜筒	0	f	2014-06-17 13:57:20.910698	2014-06-17 13:57:20.910698
+16	11	7	Topic	好像你们是一个实验室的？	0	f	2014-06-17 13:57:48.507908	2014-06-17 13:57:48.507908
+17	1	7	Topic	@shuaishuai #16 是的，这个HPEC分类就是我实验室	0	f	2014-06-17 13:59:24.755529	2014-06-17 13:59:24.755529
+18	1	7	Topic	@shuaishuai @zong89  你们的管理员权限生效了， 登录 singflying.com/admin 即可\r\n	0	f	2014-06-17 15:16:00.737436	2014-06-17 15:16:00.737436
+19	12	2	Topic	个人觉得singflying比singfly更赞~	0	f	2014-06-17 15:43:03.609415	2014-06-17 15:43:03.609415
+21	9	7	Topic	哦也	0	f	2014-06-18 01:46:08.319544	2014-06-18 01:46:08.319544
+22	13	7	Topic	鹏哥，给我一个管理员	0	f	2014-06-18 03:18:21.249269	2014-06-18 03:18:21.249269
+23	13	4	Topic	这个确实比goagent方便很多，但是耐用性不知道有没有那个好	0	f	2014-06-18 03:19:01.98704	2014-06-18 03:19:01.98704
+24	13	5	Topic	槛外人我猜是小鹏哥	0	f	2014-06-18 03:59:02.783087	2014-06-18 03:59:02.783087
+26	1	5	Topic	@a #9 @DumbBird #24 李晓鹏？	0	f	2014-06-18 04:08:51.663527	2014-06-18 04:08:51.663527
+27	1	8	Topic	我知道你是谁了，赶紧上嫂子照片啊\r\n还有等你创建个文爱的节点啊	0	f	2014-06-18 06:49:21.581276	2014-06-18 06:54:37.519269
+25	1	7	Topic	@DumbBird #22 我都不知道你是谁，改一下真名吧\r\n我隐约地猜到你是 `润润洗洗更健康` ？	0	f	2014-06-18 04:07:15.446169	2014-06-18 07:15:42.617858
+28	15	2	Topic	顶一下，刘老师	0	f	2014-06-18 13:25:21.359164	2014-06-18 13:25:21.359164
+29	1	2	Topic	@jiabingxin #28 那就赶紧创建几个话题，贡献内容吧	0	f	2014-06-18 14:22:18.923104	2014-06-18 14:22:18.923104
+20	1	2	Topic	@ilsmile #19 you know me \r\n\r\n![1220869_125.jpg](/uploads/attachment/file/15/1220869_125.jpg)	0	f	2014-06-17 15:45:48.426643	2014-06-18 14:22:35.507967
+30	6	4	Topic	哥，别老换IP了	0	f	2014-06-19 09:59:18.892229	2014-06-19 09:59:18.892229
+31	1	4	Topic	@season #30 现在不换了，就是 singflying.com 的 ip	0	f	2014-06-19 10:13:48.790638	2014-06-19 10:13:48.790638
+32	7	15	Topic	用的什么发行版呢？	0	f	2014-06-20 12:45:36.35569	2014-06-20 12:45:36.35569
+33	1	15	Topic	@a #32 你指的是什么的发行版啊？	0	f	2014-06-20 12:47:00.502017	2014-06-20 12:47:00.502017
+34	7	15	Topic	@liupeng #33 Linux 发行版	0	f	2014-06-20 13:00:29.198737	2014-06-20 13:00:29.198737
+35	1	15	Topic	@a #34 Ubuntu 14.04 LTS	0	f	2014-06-20 15:02:49.765964	2014-06-20 15:02:49.765964
+36	7	15	Topic	@liupeng #35 不用 Ubuntu 好多年，想当初第一次接触 Ubuntu 还是申请的 Ubuntu 9.10 安装光盘，忘了是从荷兰还是哪个国家寄来的。\r\n从 Ubuntu 12.04 server 开始已转入 CentOS	0	f	2014-06-20 15:13:51.785238	2014-06-20 15:13:51.785238
+37	1	15	Topic	@a #36 我很好奇你是谁啊？ rubist 基本都统一用 ubuntu，感觉都要统一本地用 mac 了 	0	f	2014-06-20 15:19:13.054411	2014-06-20 15:19:13.054411
+38	1	17	Topic	哥斯达黎加已经进球了	0	f	2014-06-20 16:50:11.652635	2014-06-20 16:50:11.652635
+39	13	7	Topic	@liupeng #25 我是杨花落尽子规啼	0	f	2014-06-21 02:19:52.305801	2014-06-21 02:19:52.305801
+40	1	18	Topic	你的管理员应该生效了。\r\n突然意识到我是多么纷乱的一个人，从在本站的称呼上就可以看出来。\r\n本站我是希望大家自我管理，所以每个管理员都要来好好推荐本站点，多贡献topic， 引导用户多参与讨论，互相学习，平等地交流。我也是管理员之一。\r\n当年没有让你们在华山玩得轻松点，很抱歉， 当时的我太自负了。\r\n换一个头像吧\r\n\r\n> 吾少也贱，故多能鄙事\r\n\r\n做不了高大上的学问，只能以此自勉了\r\n	0	f	2014-06-21 03:28:08.858689	2014-06-21 03:28:08.858689
+42	11	18	Topic	赞一个	0	f	2014-06-21 05:40:58.349595	2014-06-21 05:40:58.349595
+41	1	19	Topic	\r\n你在用 python 吗？写篇心得吧	0	f	2014-06-21 05:26:31.851905	2014-06-21 05:42:41.743126
+50	17	2	Topic	刚大概看了一下，很不错，赞～	0	f	2014-06-21 14:57:23.744999	2014-06-21 14:57:23.744999
+43	1	18	Topic	@shuaishuai #42 你也要换一个头像啊，现在的太丑了	0	f	2014-06-21 06:26:47.484735	2014-06-21 06:26:47.484735
+44	1	20	Topic	这个[话题](http://www.singflying.com/topics/2) 已经简单介绍了，是 fork 的别人的代码部署的。	0	f	2014-06-21 06:49:33.450024	2014-06-21 06:49:33.450024
+45	18	16	Topic	第一次买电子书是《生死疲劳》，在神经科学的课上……	0	f	2014-06-21 13:44:31.62649	2014-06-21 13:44:31.62649
+46	18	18	Topic	为嘛不用真名，我都不知道是谁，贾英杰？	0	f	2014-06-21 13:45:13.930066	2014-06-21 13:45:13.930066
+47	1	16	Topic	@juan-li #45 文艺女青年，换个头像吧	0	f	2014-06-21 14:27:06.712351	2014-06-21 14:27:06.712351
+48	1	18	Topic	@juan-li #46 貌似老贾还没有冒过泡	0	f	2014-06-21 14:28:29.972654	2014-06-21 14:28:29.972654
+49	1	18	Topic	听到没，求真名	0	f	2014-06-21 14:31:27.064686	2014-06-21 14:31:27.064686
+51	1	21	Topic	很遗憾的通知你，我的可以正常使用，server 端服务也是正常的\r\n\r\n改名字 换头像	0	f	2014-06-21 15:22:32.188158	2014-06-21 15:22:49.372649
+52	9	21	Topic	k可以用啊	0	f	2014-06-21 15:28:08.273813	2014-06-21 15:28:08.273813
+53	1	2	Topic	@baw5353452 #50 那就多在这儿分享你的内容吧	0	f	2014-06-22 01:20:32.440221	2014-06-22 01:20:32.440221
+54	1	24	Topic	哇，大龙老师的到来， 蓬荜生辉\r\n向[兵马俑 BBS](http://bbs.xjtu.edu.cn/) 站长 致敬	0	f	2014-06-22 08:48:59.827357	2014-06-22 09:14:35.595733
+55	1	25	Topic	示例中 \\*\\*strong\\*\\* 少了一个`*`，我懒得改图了	0	f	2014-06-22 11:31:16.878611	2014-06-22 11:31:16.878611
+56	1	24	Topic	大龙老师回西安了？	0	f	2014-06-22 16:12:12.297273	2014-06-22 16:12:12.297273
+58	1	30	Topic	任添汇，有意思吗？	0	f	2014-06-23 01:20:26.272066	2014-06-23 01:20:26.272066
+59	22	30	Topic	被你看出来了，不好玩	0	f	2014-06-23 01:31:08.221264	2014-06-23 01:31:08.221264
+57	1	29	Topic	是的，暂时是问问题， 或者分享你感兴趣的话题。不是很推荐在这里发一些微博似的一句话的短文	0	f	2014-06-23 01:19:55.012599	2014-06-23 01:55:42.155338
+60	20	24	Topic	是的，家里有点事情，临时回来几个月	0	f	2014-06-23 05:30:51.834681	2014-06-23 05:30:51.834681
+61	1	32	Topic	差不多，我当时没有正确使用优惠链接\r\n\r\n![屏幕截图 2014-06-23 13.38.48.png](/uploads/attachment/file/34/_____2014-06-23_13.38.48.png)	0	f	2014-06-23 05:39:09.632648	2014-06-23 05:40:05.381062
+62	20	32	Topic	要是前两年美元还比较值钱的时候就猜准了。	0	f	2014-06-23 05:41:26.722798	2014-06-23 05:41:26.722798
+63	1	33	Topic	好的，我尽快看看源码，添加这样的功能	0	f	2014-06-23 05:45:00.051689	2014-06-23 05:45:00.051689
+64	1	34	Topic	托管在 Digitalocean 在旧金山的一台 VPS，后面可能考虑迁到新加坡去， `ping echo time` 会更短一点\r\n![屏幕截图 2014-06-23 13.48.00.png](/uploads/attachment/file/35/_____2014-06-23_13.48.00.png)	0	f	2014-06-23 05:48:21.895345	2014-06-23 05:50:54.462874
+65	1	35	Topic	是的，能力有限， 我要好好看代码\r\n	0	f	2014-06-23 05:51:35.800246	2014-06-23 05:51:35.800246
+66	1	36	Topic	@LJ 我想你会喜欢	0	f	2014-06-23 10:53:43.51901	2014-06-23 10:53:43.51901
+67	22	30	Topic	看我的新头像是不是很屌	0	f	2014-06-24 01:10:25.339424	2014-06-24 01:10:25.339424
+68	22	36	Topic	唔	0	f	2014-06-24 03:36:01.98537	2014-06-24 03:36:01.98537
+69	22	6	Topic	我这个头像怎么样？	0	f	2014-06-24 06:36:58.787399	2014-06-24 06:36:58.787399
+70	1	6	Topic	@GreatLiu #69 巨丑无比\r\n我期待你的长文	0	f	2014-06-24 06:45:38.701131	2014-06-24 06:46:14.51821
+\.
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+--
+
+SELECT pg_catalog.setval('comments_id_seq', 70, true);
+
+
+--
+-- Data for Name: likes; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY likes (id, user_id, likeable_id, likeable_type, created_at, updated_at) FROM stdin;
+1	1	1	Topic	2014-06-17 08:43:26.995937	2014-06-17 08:43:26.995937
+2	1	2	Comment	2014-06-17 08:45:23.445364	2014-06-17 08:45:23.445364
+4	1	19	Topic	2014-06-21 05:24:46.266836	2014-06-21 05:24:46.266836
+\.
+
+
+--
+-- Name: likes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+--
+
+SELECT pg_catalog.setval('likes_id_seq', 4, true);
+
+
+--
+-- Data for Name: notifications; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY notifications (id, user_id, subject_id, subject_type, name, read, created_at, updated_at) FROM stdin;
+2	1	5	Comment	comment	t	2014-06-17 12:22:38.49299	2014-06-17 12:22:59.751724
+4	1	7	Comment	comment	t	2014-06-17 12:24:55.00374	2014-06-17 12:26:46.709794
+5	7	8	Comment	mention	t	2014-06-17 12:26:26.215098	2014-06-17 12:34:38.466446
+3	7	6	Comment	mention	t	2014-06-17 12:24:23.716777	2014-06-17 12:34:38.466446
+6	1	9	Comment	comment	t	2014-06-17 12:34:21.14251	2014-06-17 12:34:56.428316
+7	1	10	Comment	comment	t	2014-06-17 12:42:29.254839	2014-06-17 12:42:42.894902
+8	7	11	Comment	mention	t	2014-06-17 12:46:02.300847	2014-06-17 13:04:28.7831
+11	1	14	Comment	comment	t	2014-06-17 13:17:53.719512	2014-06-17 13:23:59.283924
+10	1	13	Comment	comment	t	2014-06-17 13:14:46.297285	2014-06-17 13:23:59.283924
+14	11	17	Comment	mention	t	2014-06-17 13:59:28.200081	2014-06-17 14:01:32.132461
+18	1	19	Comment	comment	t	2014-06-17 15:43:07.01884	2014-06-17 15:50:03.958477
+19	12	20	Comment	mention	t	2014-06-17 15:45:49.255302	2014-06-17 15:51:13.980467
+22	1	24	Comment	comment	t	2014-06-18 03:59:06.09425	2014-06-18 04:04:08.847001
+21	1	23	Comment	comment	t	2014-06-18 03:19:03.938125	2014-06-18 04:04:08.847001
+25	7	26	Comment	mention	t	2014-06-18 04:08:55.573357	2014-06-18 04:17:22.887956
+27	14	27	Comment	comment	f	2014-06-18 06:49:22.673773	2014-06-18 06:49:22.673773
+28	1	28	Comment	comment	t	2014-06-18 13:25:22.599507	2014-06-18 13:25:33.227244
+29	15	29	Comment	mention	f	2014-06-18 14:22:20.375817	2014-06-18 14:22:20.375817
+9	6	12	Comment	comment	t	2014-06-17 13:10:47.946721	2014-06-19 09:56:03.01176
+1	6	4	Comment	mention	t	2014-06-17 11:30:34.503346	2014-06-19 09:56:03.01176
+30	1	30	Comment	comment	t	2014-06-19 09:59:21.088441	2014-06-19 10:12:57.324836
+24	9	25	Comment	comment	t	2014-06-18 04:07:17.886486	2014-06-20 01:37:30.051426
+20	9	22	Comment	comment	t	2014-06-18 03:18:22.337139	2014-06-20 01:37:30.051426
+16	9	18	Comment	mention	t	2014-06-17 15:16:04.24099	2014-06-20 01:37:30.051426
+15	9	17	Comment	comment	t	2014-06-17 13:59:28.231641	2014-06-20 01:37:30.051426
+13	9	16	Comment	comment	t	2014-06-17 13:57:50.800443	2014-06-20 01:37:30.051426
+12	9	15	Comment	comment	t	2014-06-17 13:57:23.395721	2014-06-20 01:37:30.051426
+32	1	32	Comment	comment	t	2014-06-20 12:45:39.429029	2014-06-20 12:46:11.231899
+33	7	33	Comment	mention	t	2014-06-20 12:47:01.733848	2014-06-20 13:00:59.6463
+34	1	34	Comment	mention	t	2014-06-20 13:00:31.091413	2014-06-20 15:02:32.214731
+35	7	35	Comment	mention	t	2014-06-20 15:02:52.731613	2014-06-20 15:16:55.89851
+36	1	36	Comment	mention	t	2014-06-20 15:13:55.04286	2014-06-20 15:17:33.499262
+37	7	37	Comment	mention	t	2014-06-20 15:19:16.917841	2014-06-20 15:19:36.862738
+31	6	31	Comment	mention	t	2014-06-19 10:13:53.919853	2014-06-20 16:47:00.794337
+38	6	38	Comment	comment	f	2014-06-20 16:50:16.436221	2014-06-20 16:50:16.436221
+23	13	25	Comment	mention	t	2014-06-18 04:07:17.858865	2014-06-21 02:19:05.339632
+26	13	26	Comment	mention	t	2014-06-18 04:08:55.592872	2014-06-21 02:19:05.339632
+40	9	39	Comment	comment	f	2014-06-21 02:19:57.474266	2014-06-21 02:19:57.474266
+39	1	39	Comment	mention	t	2014-06-21 02:19:57.281995	2014-06-21 02:44:58.731622
+41	13	40	Comment	comment	f	2014-06-21 03:28:13.339685	2014-06-21 03:28:13.339685
+42	13	41	Comment	comment	f	2014-06-21 05:26:36.578727	2014-06-21 05:26:36.578727
+43	13	42	Comment	comment	f	2014-06-21 05:41:00.351295	2014-06-21 05:41:00.351295
+17	11	18	Comment	mention	t	2014-06-17 15:16:04.298054	2014-06-21 05:41:04.243847
+45	13	43	Comment	comment	f	2014-06-21 06:26:53.077588	2014-06-21 06:26:53.077588
+44	11	43	Comment	mention	t	2014-06-21 06:26:52.993985	2014-06-21 06:41:51.946209
+46	11	44	Comment	comment	f	2014-06-21 06:49:39.040668	2014-06-21 06:49:39.040668
+48	13	46	Comment	comment	f	2014-06-21 13:45:16.398557	2014-06-21 13:45:16.398557
+49	18	47	Comment	mention	f	2014-06-21 14:27:08.518465	2014-06-21 14:27:08.518465
+50	18	48	Comment	mention	f	2014-06-21 14:28:31.823498	2014-06-21 14:28:31.823498
+51	13	48	Comment	comment	f	2014-06-21 14:28:31.845716	2014-06-21 14:28:31.845716
+47	1	45	Comment	comment	t	2014-06-21 13:44:32.815526	2014-06-21 14:29:08.446029
+52	13	49	Comment	comment	f	2014-06-21 14:31:33.668978	2014-06-21 14:31:33.668978
+53	1	50	Comment	comment	t	2014-06-21 14:57:27.490187	2014-06-21 15:18:25.713507
+54	13	51	Comment	comment	f	2014-06-21 15:22:35.219851	2014-06-21 15:22:35.219851
+55	13	52	Comment	comment	f	2014-06-21 15:28:11.177467	2014-06-21 15:28:11.177467
+56	17	53	Comment	mention	f	2014-06-22 01:20:36.238921	2014-06-22 01:20:36.238921
+59	21	57	Comment	comment	f	2014-06-23 01:19:58.69127	2014-06-23 01:19:58.69127
+60	22	58	Comment	comment	t	2014-06-23 01:20:30.783201	2014-06-23 01:31:27.08258
+57	20	54	Comment	comment	t	2014-06-22 08:49:08.177379	2014-06-23 05:30:29.958103
+58	20	56	Comment	comment	t	2014-06-22 16:12:17.671735	2014-06-23 05:30:29.958103
+61	20	61	Comment	comment	t	2014-06-23 05:39:11.015198	2014-06-23 05:47:43.274143
+62	20	63	Comment	comment	t	2014-06-23 05:45:07.372879	2014-06-23 05:47:43.274143
+63	20	64	Comment	comment	f	2014-06-23 05:48:27.378144	2014-06-23 05:48:27.378144
+64	20	65	Comment	comment	f	2014-06-23 05:51:41.080302	2014-06-23 05:51:41.080302
+65	4	66	Comment	mention	f	2014-06-23 10:53:44.594265	2014-06-23 10:53:44.594265
+66	1	68	Comment	comment	t	2014-06-24 03:36:06.222271	2014-06-24 06:44:28.234079
+67	1	69	Comment	comment	t	2014-06-24 06:37:04.285676	2014-06-24 06:44:28.234079
+68	22	70	Comment	mention	f	2014-06-24 06:45:42.028929	2014-06-24 06:45:42.028929
+\.
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+--
+
+SELECT pg_catalog.setval('notifications_id_seq', 68, true);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY schema_migrations (version) FROM stdin;
+20140103111354
+20140104125105
+20140121065043
+20140130122905
+20140204053314
+20140204164212
+20140208060708
+20140218070616
+20140310070632
+20140405074043
+20140412065000
+20140412113810
+20140618120041
+\.
+
+
+--
+-- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY subscriptions (id, user_id, subscribable_id, subscribable_type, status, created_at, updated_at) FROM stdin;
+1	1	1	Topic	0	2014-06-17 08:43:17.874892	2014-06-17 08:43:17.874892
+2	1	2	Topic	0	2014-06-17 10:55:31.43466	2014-06-17 10:55:31.43466
+3	6	3	Topic	0	2014-06-17 11:13:03.038658	2014-06-17 11:13:03.038658
+4	1	4	Topic	0	2014-06-17 11:18:49.509869	2014-06-17 11:18:49.509869
+6	1	5	Topic	0	2014-06-17 12:21:45.168412	2014-06-17 12:21:45.168412
+7	1	6	Topic	0	2014-06-17 12:41:45.818538	2014-06-17 12:41:45.818538
+8	9	7	Topic	0	2014-06-17 13:47:32.142834	2014-06-17 13:47:32.142834
+9	14	8	Topic	0	2014-06-18 06:36:18.268211	2014-06-18 06:36:18.268211
+10	1	9	Topic	0	2014-06-18 06:44:10.245909	2014-06-18 06:44:10.245909
+11	1	10	Topic	0	2014-06-18 08:56:34.74116	2014-06-18 08:56:34.74116
+12	6	11	Topic	0	2014-06-19 09:54:27.298841	2014-06-19 09:54:27.298841
+13	1	12	Topic	0	2014-06-19 14:24:24.722775	2014-06-19 14:24:24.722775
+14	9	13	Topic	0	2014-06-20 01:32:38.259314	2014-06-20 01:32:38.259314
+15	1	14	Topic	0	2014-06-20 10:15:24.355688	2014-06-20 10:15:24.355688
+16	1	15	Topic	0	2014-06-20 10:53:18.532538	2014-06-20 10:53:18.532538
+17	1	16	Topic	0	2014-06-20 15:49:21.077801	2014-06-20 15:49:21.077801
+18	6	17	Topic	0	2014-06-20 16:48:16.397145	2014-06-20 16:48:16.397145
+19	13	18	Topic	0	2014-06-21 02:48:32.709452	2014-06-21 02:48:32.709452
+20	13	19	Topic	0	2014-06-21 05:19:06.781852	2014-06-21 05:19:06.781852
+21	11	20	Topic	0	2014-06-21 06:41:42.017339	2014-06-21 06:41:42.017339
+22	13	21	Topic	0	2014-06-21 15:12:03.618104	2014-06-21 15:12:03.618104
+23	1	22	Topic	0	2014-06-22 02:54:10.900852	2014-06-22 02:54:10.900852
+24	1	23	Topic	0	2014-06-22 03:33:58.471522	2014-06-22 03:33:58.471522
+25	20	24	Topic	0	2014-06-22 07:08:12.926966	2014-06-22 07:08:12.926966
+26	1	25	Topic	0	2014-06-22 08:47:04.976454	2014-06-22 08:47:04.976454
+27	1	26	Topic	0	2014-06-22 09:38:09.7568	2014-06-22 09:38:09.7568
+28	1	27	Topic	0	2014-06-22 12:26:48.035385	2014-06-22 12:26:48.035385
+29	1	28	Topic	0	2014-06-22 13:11:14.659966	2014-06-22 13:11:14.659966
+30	21	29	Topic	0	2014-06-23 00:44:26.28325	2014-06-23 00:44:26.28325
+31	22	30	Topic	0	2014-06-23 00:58:51.400954	2014-06-23 00:58:51.400954
+32	1	31	Topic	0	2014-06-23 01:16:58.584341	2014-06-23 01:16:58.584341
+33	20	32	Topic	0	2014-06-23 05:34:26.916728	2014-06-23 05:34:26.916728
+34	20	33	Topic	0	2014-06-23 05:43:00.232858	2014-06-23 05:43:00.232858
+35	20	34	Topic	0	2014-06-23 05:46:14.016589	2014-06-23 05:46:14.016589
+36	20	35	Topic	0	2014-06-23 05:49:15.070597	2014-06-23 05:49:15.070597
+37	1	36	Topic	0	2014-06-23 10:43:45.154846	2014-06-23 10:43:45.154846
+38	1	37	Topic	0	2014-06-25 06:35:49.826605	2014-06-25 06:35:49.826605
+\.
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+--
+
+SELECT pg_catalog.setval('subscriptions_id_seq', 38, true);
+
+
+--
+-- Data for Name: topics; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY topics (id, user_id, category_id, title, body, hot, comments_count, likes_count, subscriptions_count, trashed, created_at, updated_at, views_count) FROM stdin;
+1	1	\N	Just for test	a test topic, not mention it.	31178.1348509190102	3	1	1	t	2014-06-17 08:43:17.834893	2014-06-17 10:57:38.865902	0
+13	9	\N	翻墙上不去啊	老师怎么办	31182.8435164543771	0	0	1	t	2014-06-20 01:32:38.240447	2014-06-20 01:47:03.191497	0
+10	1	\N	video 	<iframe height=498 width=510 src="http://player.youku.com/embed/XNzA2MjkwMDU2" frameborder=0 allowfullscreen></iframe>	31179.5954380841358	0	0	1	t	2014-06-18 08:56:34.713786	2014-06-18 08:56:40.837051	0
+7	9	1	冰箱里有棒冰呀	大家快去吃	31178.966470609259	8	0	1	f	2014-06-17 13:47:32.128002	2014-06-24 17:30:43.596791	51
+21	13	6	shadowsocks翻墙不好用了	谷歌神马的上不去了	31186.1571093589992	2	0	1	f	2014-06-21 15:12:03.57135	2014-06-24 20:04:44.937649	141
+12	1	4	翻墙 vpn -- 云梯	今天借到一个 mac pro， 想体验下在 OS X 下的开发感受， 发现在 app store 下很多软件都不能下载安装， 就一狠心买了[云梯的 vpn](https://www.ytvpn.com)。\r\n\r\n这个是我的[推荐链接](http://igotvpn.com/?r=7ce3781d407317e6)，通过此链接购买一年的套餐，你将会获得 15 元的优惠， 而我的账户也会获得 10 元。 \r\n\r\n我之前的推荐的 shadowsocks 只能在浏览器内翻墙， 而要在 app 应用中翻墙， vpn 是一种好的途径， 推荐给苹果用户。	31181.9525491271816	0	0	1	f	2014-06-19 14:24:24.710723	2014-06-23 16:51:31.548256	25
+9	1	5	致管理员们	- 登录 `singflying.com/admin` 即为管理员操作界面。\r\n- 这个网站只是 beta 版本，所有管理员的权限都跟我一样且会很大，拥有所有分类下的话题删除和用户锁定删除权限，希望大家慎重。\r\n- 关于网站的一些 bug 和改进建议，希望大家多多进言\r\n- 管理员可自行创建自己喜欢的分类或者叫圈子，并自行推进\r\n- 再加一条我强加的：管理员有义务推广本站点啊\r\n\r\n目前的管理员有@shuaishuai, @zong89, @guanzhongdaoke, @DumbBird\r\n**想成为管理员的同学请告诉我你的真名**\r\n\r\n	31179.4188941236025	0	0	1	f	2014-06-18 06:44:10.235562	2014-06-25 06:53:21.526405	29
+27	1	6	  无责任职业测试	http://www.arealme.com/career/cn/\r\n\r\n\r\n![Screenshot from 2014-06-22 20:26:16.png](/uploads/attachment/file/26/Screenshot_from_2014-06-22_20_26_16.png)	31187.5557323346875	0	0	1	f	2014-06-22 12:26:47.955061	2014-06-24 02:31:41.751665	16
+5	1	5	怎样使用本站文本框编辑器--markdown	本站的编辑器只有编辑预览两个选择， 支持 markdown 语法。\r\n用惯了 WYSIWYG 编辑器，或许 makrdown 对于你来说有点陌生， 但是花点时间（只需要一个小时了解语法，加上半天的熟悉）掌握它将会让你对写作多一点喜欢。\r\n\r\n这儿只提供几个链接：\r\n\r\n- [markdown  语法](http://www.ituring.com.cn/article/775)\r\n- [在线 Markdown 编辑阅读器](https://www.zybuluo.com/mdeditor)	31178.6479734670502	5	0	1	f	2014-06-17 12:21:45.155822	2014-06-24 14:02:48.569207	29
+3	6	6	为什么刘老师那么帅？	![large_Bmr4_93029f206112.jpg](/uploads/attachment/file/5/large_Bmr4_93029f206112.jpg)	31178.1584306260411	2	0	1	f	2014-06-17 11:13:03.028367	2014-06-25 07:20:23.76175	27
+11	6	6	姐姐，今夜我不关心人类，我只想你	![large_8wJo_92607n206112.jpg](/uploads/attachment/file/16/large_8wJo_92607n206112.jpg)	31181.5926057659999	0	0	1	f	2014-06-19 09:54:27.25947	2014-06-23 15:10:16.767435	17
+2	1	5	singflying 的诞生	> 每个人都想有一点自己的小秘密， 而我想有一点属于自己的东西，所以我不厌烦地抄袭造轮子\r\n\r\n建此网站的初衷，是想让我的朋友们或者朋友的朋友们之间的线上交流能够沉淀下来。QQ 类的实时聊天工具在群聊时查阅历史记录比较麻烦，很难捋清会话分支， 而有些内容是不需要很实时的，就像短信没有规定要秒回一样。\r\n\r\n这个网站的源码是 fork  [Rei](https://github.com/chloerei) 的 [campo](https://github.com/chloerei/campo)，感谢 Rei 。以后自己会做一点定制。VPS 用的是 Digitalocean 在 旧金山的机房。域名 singflying.com 是从 goDaddy 上买的。\r\n\r\nsingflying  是由 sing 和 fly 演变成的。我本身不是很喜欢粗话，希望说的能像唱般好听，也希望这儿能够畅所欲言， 像飞一般自由，又因为 singfly.com 价格太贵了，所以最后定下了 singflying.com.\r\n\r\n![Broad-billed-Hummingbird.jpeg](/uploads/attachment/file/10/Broad-billed-Hummingbird.jpeg)	31178.7882710283302	9	0	1	f	2014-06-17 10:55:31.28335	2014-06-25 07:30:37.507247	130
+6	1	5	用户头像	本站点是默认你有 [Gravatar - 全球公认的头像](https://cn.gravatar.com/)，如果没有那就会显示默认的一个丑陋的图像\r\n你可以用你在本站的注册邮箱注册一个 Gravatar 头像， 或者在个人资料中上传你的头像	31178.2767146079532	2	0	1	f	2014-06-17 12:41:45.807553	2014-06-25 13:24:33.961712	19
+36	1	2	张悬在交大的演唱	<iframe width="640" height="360" src="//www.youtube.com/embed/uR27AiHlPKA" frameborder="0" allowfullscreen></iframe>\r\n\r\n<iframe width="640" height="360" src="//www.youtube.com/embed/PIFqzR6ShRE?list=FLnPC_uWT3JcPf0Y0TkPgwHQ" frameborder="0" allowfullscreen></iframe>\r\n\r\n如果你看不到上面的两个视频，那对于你不能正常访问 youtube， 我表示很遗憾。失去了看到另外一个世界的机会，相对应的获得了什么，你可以在下面回复我	31189.6393629810154	2	0	1	f	2014-06-23 10:43:44.984341	2014-06-25 14:26:59.743179	52
+8	14	6	WOW，刘老师好帅哦！	动地打次动词打次，你是我的小呀小苹果，火火火火！	31179.4084053480692	1	0	1	f	2014-06-18 06:36:18.240663	2014-06-24 08:42:57.903057	24
+29	21	3	这个网站	这是一个什么网站，不懂得，不能一起聊天吗，只能发一些问题。	31188.5392491950661	1	0	1	f	2014-06-23 00:44:26.213778	2014-06-24 08:49:39.76046	22
+22	1	6	电影 -- 魁拔	我是大约在今年4月初知道有 《魁拔》这部系列电影的。当时买了优酷一个月的 VIP 用户权限，正好无聊看了一下，看的过程中感觉内心很澎湃激昂，遂向很多同学推荐，也知道有些人都已经熟悉这部电影了，也有人已经用蛮吉做了头像。\r\n这是前两部的链接 [魁拔之十万火急](http://v.youku.com/v_show/id_XMjk0MTQ4NjM2.html), [魁拔2之大战元泱界](http://www.m1905.com/vod/play/677707.shtml#guessYouLike)\r\n\r\n貌似应该是这个6月应该发布第3部了，刚刚搜了下新闻还没有相关的，期待。。。\r\n\r\n![96806342_2.jpg](/uploads/attachment/file/22/96806342_2.jpg)	31186.7922373238471	0	0	1	f	2014-06-22 02:54:10.679573	2014-06-25 05:51:51.147641	63
+31	1	5	360 对本站的安全报告	![Screenshot from 2014-06-23 09:17:56.png](/uploads/attachment/file/33/Screenshot_from_2014-06-23_09_17_56.png)	31188.5826349307317	0	0	1	f	2014-06-23 01:16:58.571883	2014-06-25 03:49:51.998218	20
+30	22	\N	我儿出息啦	当爹的自然很开心，对吧，鹏儿	31189.0355964550326	3	0	1	f	2014-06-23 00:58:51.384014	2014-06-25 04:18:03.900534	41
+37	1	5	添加了 WYSIWYG 所见即所得编辑器	<p>在创建话题页面上，基于 <a href="http://simditor.tower.im/" target="_blank">simditor</a>，添加了 WYSIWYG 编辑器，&nbsp;目前暂不支持上传图片功能，如果想使用上传图片和分享视频功能，请点击 <b>markdown</b> 图标，切换到 <b>markdown</b> 编辑器</p>	31192.8477732658212	0	0	1	f	2014-06-25 06:35:49.796962	2014-06-25 14:34:26.128705	26
+15	1	4	本站部署遇到的问题	我并不是一个喜欢记问题的人，记得高中的错题本都没有几个题，印象最深的是物理错题本，上面只有老师写的从今日起开始记录错题。\r\n\r\n在一开始部署 `singflying.com` 时，自己两眼摸瞎， 知道了 `nginx`, `passenger` 的基本配置，发现了部署一开始的bug：没有把配置文件放在 `site-enabled` 目录下。\r\n\r\n前几天上线成功后，发现本地新加的功能，更新不到网站上去，问了[李亚飞兄](http://yafeilee.me/)，给了几个建议。今天下午重新部署了下，幸运地成功了， 当时我都做好了数据库损坏的话怎么向大家交代的打算，哈哈。\r\n\r\n\r\n![ca1349540923dd548ff75b35d109b3de9d8248e3.jpg](/uploads/attachment/file/21/ca1349540923dd548ff75b35d109b3de9d8248e3.jpg)	31184.3692292016276	6	0	1	f	2014-06-20 10:53:18.507806	2014-06-25 09:31:16.941806	90
+14	1	5	本站更新日志	本站代码仓库在 [https://github.com/dp90219/sing] (https://github.com/dp90219/sing)\r\n### 2014 - 06 - 20\r\n> 在 `Topic#index` 页面添加了每个话题的浏览次数的统计功能\r\n   添加了 `favicon.ico`, 是一只挥翅振飞的小鸟\r\n\r\n### 2014 - 06 - 21\r\n> 添加了几个 `meta` 标签\r\n\r\n突然发现在没有做任何 SEO 下  `google stringflying` 已经是第 2 名了，百度、 bing 是直接搜不到的。添加 `google analysis` 没有成功，不知为什么， 百度分析添加成功后发现页面跳转不正常，页脚出现百度图标，就放弃了。\r\n\r\n> 在 `Topic#show` 页面添加几个社交网站的的分享功能\r\n\r\n一开始部署时，`git merge` 不知为何没有全部 merge， 导致出错。\r\n\r\n### 2014 -06 - 22\r\n> 添加了 `google analysis`\r\n\r\n今天早上发现昨天添加的 `google analysis` 其实是成功的，它检测跟踪代码的存在不是很实时而已。\r\n\r\n> 添加了 google， baidu， bing， 360 的 site verification\r\n\r\n### 2014 -06 - 23\r\n> 开启了在 markdown 中添加 iframe， embed 视频标签的功能，测试了 youtube, youku, iqiyi.\r\n\r\n![jewel-icon.png](/uploads/attachment/file/17/jewel-icon.png)\r\n\r\n	31183.540540761911	0	0	1	f	2014-06-20 10:15:24.334286	2014-06-23 23:49:44.19338	53
+17	6	6	意大利要赢啊	![large_NQ2B_92653n206112.jpg](/uploads/attachment/file/20/large_NQ2B_92653n206112.jpg)	31184.0643638092006	1	0	1	f	2014-06-20 16:48:16.371414	2014-06-23 15:10:45.376713	32
+23	1	4	转载：Python程序员的10个常见错误	## 关于Python\r\n\r\nPython是一门解释性的，面向对象的，并具有动态语义的高级编程语言。它高级的内置数据结构，结合其动态类型和动态绑定的特性，使得它在快速应用程序开发（Rapid Application Development）中颇为受欢迎，同时Python还能作为脚本语言或者胶水语言讲现成的组件或者服务结合起来。Python支持模块（modules）和包（packages），所以也鼓励程序的模块化以及代码重用。\r\n\r\n## 关于本文\r\n\r\nPython简单、易学的语法可能会误导一些Python程序员（特别是那些刚接触这门语言的人们），可能会忽略某些细微之处和这门语言的强大之处。\r\n\r\n考虑到这点，本文列出了“十大”甚至是高级的Python程序员都可能犯的，却又不容易发现的细微错误。（注意：本文是针对比《Python程序员常见错误》稍微高级一点读者，对于更加新手一点的Python程序员，有兴趣可以读一读那篇文章）\r\n\r\n### 常见错误1：在函数参数中乱用表达式作为默认值\r\n\r\nPython允许给一个函数的某个参数设置默认值以使该参数成为一个可选参数。尽管这是这门语言很棒的一个功能，但是这当这个默认值是可变对象（mutable）时，那就有些麻烦了。例如，看下面这个Python函数定义：\r\n\r\n```python\r\n>>> def foo(bar=[]):        # bar是可选参数，如果没有指明的话，默认值是[]\r\n...    bar.append("baz")    # 但是这行可是有问题的，走着瞧…\r\n...    return bar\r\n```\r\n\r\n人们常犯的一个错误是认为每次调用这个函数时不给这个可选参数赋值的话，它总是会被赋予这个默认表达式的值。例如，在上面的代码中，程序员可能会认为重复调用函数foo() （不传参数bar给这个函数），这个函数会总是返回‘baz’，因为我们假定认为每次调用foo()的时候（不传bar），参数bar会被置为[]（即，一个空的列表）。\r\n\r\n那么我们来看看这么做的时候究竟会发生什么：\r\n\r\n```python\r\n>>> foo()\r\n["baz"]\r\n>>> foo()\r\n["baz", "baz"]\r\n>>> foo()\r\n["baz", "baz", "baz"]\r\n```\r\n\r\n嗯？为什么每次调用foo()的时候，这个函数总是在一个已经存在的列表后面添加我们的默认值“baz”，而不是每次都创建一个新的列表？\r\n\r\n答案是一个函数参数的默认值，仅仅在该函数定义的时候，被赋值一次。如此，只有当函数foo()第一次被定义的时候，才讲参数bar的默认值初始化到它的默认值（即一个空的列表）。当调用foo()的时候（不给参数bar），会继续使用bar最早初始化时的那个列表。\r\n\r\n由此，可以有如下的解决办法：\r\n\r\n```python\r\n>>> def foo(bar=None):\r\n...    if bar is None:      # 或者用 if not bar:\r\n...        bar = []\r\n...    bar.append("baz")\r\n...    return bar\r\n...\r\n>>> foo()\r\n["baz"]\r\n>>> foo()\r\n["baz"]\r\n>>> foo()\r\n["baz"]\r\n```\r\n\r\n### 常见错误2：不正确的使用类变量\r\n\r\n看下面一个例子：\r\n\r\n```python\r\n>>> class A(object):\r\n...     x = 1\r\n...\r\n>>> class B(A):\r\n...     pass\r\n...\r\n>>> class C(A):\r\n...     pass\r\n...\r\n>>> print A.x, B.x, C.x\r\n1 1 1\r\n```\r\n\r\n看起来没有问题。\r\n\r\n```python\r\n>>> B.x = 2\r\n>>> print A.x, B.x, C.x\r\n1 2 1\r\n```\r\n\r\n嗯哈，还是和预想的一样。\r\n\r\n\r\n```python\r\n>>> A.x = 3\r\n>>> print A.x, B.x, C.x\r\n3 2 3\r\n```\r\n\r\n我了个去。只是改变了A.x，为啥C.x也变了？\r\n\r\n在Python里，类变量通常在内部被当做字典来处理并遵循通常所说的方法解析顺序（Method Resolution Order (MRO)）。因此在上面的代码中，因为属性x在类C中找不到，因此它会往上去它的基类中查找（在上面的例子中只有A这个类，当然Python是支持多重继承（multiple inheritance）的）。换句话说，C没有它自己独立于A的属性x。因此对C.x的引用实际上是对A.x的引用。（B.x不是对A.x的引用是因为在第二步里B.x=2将B.x引用到了2这个对象上，倘若没有如此，B.x仍然是引用到A.x上的。——译者注）\r\n\r\n### 常见错误3：在异常处理时错误的使用参数\r\n\r\n假设你有如下的代码：\r\n\r\n```python\r\n>>> try:\r\n...     l = ["a", "b"]\r\n...     int(l[2])\r\n... except ValueError, IndexError:  # 想捕捉两个异常\r\n...     pass\r\n...\r\nTraceback (most recent call last):\r\n  File "<stdin>", line 3, in <module>\r\nIndexError: list index out of range\r\n```\r\n\r\n这里的问题在于except语句不会像这样去接受一系列的异常。并且，在Python 2.x里面，语法except Exception, e是用来将异常和这个可选的参数绑定起来（即这里的e），以用来在后面查看的。因此，在上面的代码中，IndexError异常不会被except语句捕捉到；而最终ValueError这个异常被绑定在了一个叫做IndexError的参数上。\r\n\r\n在except语句中捕捉多个异常的正确做法是将所有想要捕捉的异常放在一个元组（tuple）里并作为第一个参数给except语句。并且，为移植性考虑，使用as关键字，因为Python 2和Python 3都支持这样的语法，例如：\r\n\r\n``` python\r\n>>> try:\r\n...     l = ["a", "b"]\r\n...     int(l[2])\r\n... except (ValueError, IndexError) as e:  \r\n...     pass\r\n...\r\n>>>\r\n```\r\n\r\n### 常见错误4：误解Python作用域的规则\r\n\r\nPython的作用域解析是基于叫做LEGB（Local（本地），Enclosing（封闭），Global（全局），Built-in（内置））的规则进行操作的。这看起来很直观，对吧？事实上，在Python中这有一些细微的地方很容易出错。看这个例子：\r\n\r\n```python\r\n>>> x = 10\r\n>>> def foo():\r\n...     x += 1\r\n...     print x\r\n...\r\n>>> foo()\r\nTraceback (most recent call last):\r\n  File "<stdin>", line 1, in <module>\r\n  File "<stdin>", line 2, in foo\r\nUnboundLocalError: local variable 'x' referenced before assignment\r\n```\r\n\r\n这是怎么回事？\r\n\r\n这是因为，在一个作用域里面给一个变量赋值的时候，Python自动认为这个变量是这个作用域的本地变量，并屏蔽作用域外的同名的变量。\r\n\r\n很多时候可能在一个函数里添加一个赋值的语句会让你从前本来工作的代码得到一个UnboundLocalError。（感兴趣的话可以读一读这篇文章。）\r\n\r\n在使用列表（lists）的时候，这种情况尤为突出。看下面这个例子：\r\n\r\n```python\r\n>>> lst = [1, 2, 3]\r\n>>> def foo1():\r\n...     lst.append(5)   # 这没有问题...\r\n...\r\n>>> foo1()\r\n>>> lst\r\n[1, 2, 3, 5]\r\n \r\n>>> lst = [1, 2, 3]\r\n>>> def foo2():\r\n...     lst += [5]      # ... 这就有问题了！\r\n...\r\n>>> foo2()\r\nTraceback (most recent call last):\r\n  File "<stdin>", line 1, in <module>\r\n  File "<stdin>", line 2, in foo\r\nUnboundLocalError: local variable 'lst' referenced before assignment\r\n```\r\n\r\n嗯？为什么foo2有问题，而foo1没有问题？\r\n\r\n答案和上一个例子一样，但是更加不易察觉。foo1并没有给lst赋值，但是foo2尝试给lst赋值。注意lst+=[5]只是lst=lst+[5]的简写，由此可以看到我们尝试给lst赋值（因此Python假设作用域为本地）。但是，这个要赋给lst的值是基于lst本身的（这里的作用域仍然是本地），而lst却没有被定义，这就出错了。\r\n\r\n### 常见错误5：在遍历列表的同时又在修改这个列表\r\n\r\n下面这个例子中的代码应该比较明显了：\r\n\r\n```python\r\n>>> odd = lambda x : bool(x % 2)\r\n>>> numbers = [n for n in range(10)]\r\n>>> for i in range(len(numbers)):\r\n...     if odd(numbers[i]):\r\n...         del numbers[i]  # 这不对的：在遍历列表时删掉列表的元素。\r\n...\r\nTraceback (most recent call last):\r\n      File "<stdin>", line 2, in <module>\r\nIndexError: list index out of range\r\n```\r\n\r\n遍历一个列表或者数组的同时又删除里面的元素，对任何有经验的软件开发人员来说这是个很明显的错误。但是像上面的例子那样明显的错误，即使有经验的程序员也可能不经意间在更加复杂的程序中不小心犯错。\r\n\r\n所幸，Python集成了一些优雅的编程范式，如果使用得当，可以写出相当简化和精简的代码。一个附加的好处是更简单的代码更不容易遇到这种“不小心在遍历列表时删掉列表元素”的bug。例如列表推导式（list comprehensions）就提供了这样的范式。再者，列表推导式在避免这样的问题上特别有用，接下来这个对上面的代码的重新实现就相当完美：\r\n\r\n```python\r\n>>> odd = lambda x : bool(x % 2)\r\n>>> numbers = [n for n in range(10)]\r\n>>> numbers[:] = [n for n in numbers if not odd(n)]  # 啊，这多优美\r\n>>> numbers\r\n[0, 2, 4, 6, 8]\r\n```\r\n\r\n### 常见错误6：搞不清楚在闭包（closures）中Python是怎样绑定变量的\r\n\r\n看这个例子：\r\n\r\n```python\r\n>>> def create_multipliers():\r\n...     return [lambda x : i * x for i in range(5)]\r\n>>> for multiplier in create_multipliers():\r\n...     print multiplier(2)\r\n...\r\n```\r\n期望得到下面的输出：\r\n\r\n\r\n```python\r\n1\r\n2\r\n3\r\n4\r\n5\r\n0\r\n2\r\n4\r\n6\r\n8\r\n```\r\n\r\n但是实际上得到的是：\r\n\r\n```python\r\n1\r\n2\r\n3\r\n4\r\n5\r\n8\r\n8\r\n8\r\n8\r\n8\r\n```\r\n\r\n意外吧！\r\n\r\n这是由于Python的后期绑定（late binding）机制导致的，这是指在闭包中使用的变量的值，是在内层函数被调用的时候查找的。因此在上面的代码中，当任一返回函数被调用的时候，i的值是在它被调用时的周围作用域中查找（到那时，循环已经结束了，所以i已经被赋予了它最终的值4）。\r\n\r\n解决的办法比较巧妙：\r\n\r\n```python\r\n>>> def create_multipliers():\r\n...     return [lambda x, i=i : i * x for i in range(5)]\r\n...\r\n>>> for multiplier in create_multipliers():\r\n...     print multiplier(2)\r\n...\r\n0\r\n2\r\n4\r\n6\r\n8\r\n```\r\n\r\n这下对了！这里利用了默认参数去产生匿名函数以达到期望的效果。有人会说这很优美，有人会说这很微妙，也有人会觉得反感。但是如果你是一名Python程序员，重要的是能理解任何的情况。\r\n\r\n### 常见错误7：循环加载模块\r\n\r\n假设你有两个文件，a.py和b.py，在这两个文件中互相加载对方，例如：\r\n\r\n在a.py中：\r\n\r\n```python\r\nimport b\r\ndef f():\r\n    return b.x\r\nprint f()\r\n```\r\n\r\n在b.py中：\r\n\r\n```python\r\nimport a\r\nx = 1\r\ndef g():\r\n    print a.f()\r\n```\r\n\r\n首先，我们试着加载a.py：\r\n\r\n```python\r\n>>> import a\r\n1\r\n```\r\n\r\n没有问题。也许让人吃惊，毕竟有个感觉应该是问题的循环加载在这儿。\r\n\r\n事实上在Python中仅仅是表面上的出现循环加载并不是什么问题。如果一个模块以及被加载了，Python不会傻到再去重新加载一遍。但是，当每个模块都想要互相访问定义在对方里的函数或者变量时，问题就来了。\r\n\r\n让我们再回到之前的例子，当我们加载a.py时，它再加载b.py不会有问题，因为在加载b.py时，它并不需要访问a.py的任何东西，而在b.py中唯一的引用就是调用a.f()。但是这个调用是在函数g()中完成的，并且a.py或者b.py中没有人调用g()，所以这会儿心情还是美丽的。\r\n\r\n但是当我们试图加载b.py时（之前没有加载a.py），会发生什么呢：\r\n\r\n```python\r\n>>> import b\r\nTraceback (most recent call last):\r\n      File "<stdin>", line 1, in <module>\r\n      File "b.py", line 1, in <module>\r\n    import a\r\n      File "a.py", line 6, in <module>\r\n    print f()\r\n      File "a.py", line 4, in f\r\n    return b.x\r\nAttributeError: 'module' object has no attribute 'x'\r\n```\r\n\r\n恭喜你，出错了。这里问题出在加载b.py的过程中，Python试图加载a.py，并且在a.py中需要调用到f()，而函数f()又要访问到b.x，但是这个时候b.x却还没有被定义。这就产生了AttributeError异常。\r\n\r\n解决的方案可以做一点细微的改动。改一下b.py，使得它在g()里面加载a.py：\r\n\r\n\r\n```python\r\nx = 1\r\ndef g():\r\n    import a    # 只有当g()被调用的时候才加载\r\n    print a.f()\r\n```\r\n这会儿当我们加载b.py的时候，一切安好：\r\n\r\n```python\r\n>>> import b\r\n>>> b.g()\r\n1   # 第一次输出，因为模块a在最后调用了‘print f()’\r\n1   # 第二次输出，这是我们调用g()\r\n```\r\n\r\n### 常见错误8：与Python标准库模块命名冲突\r\n\r\nPython的一个优秀的地方在于它提供了丰富的库模块。但是这样的结果是，如果你不下意识的避免，很容易你会遇到你自己的模块的名字与某个随Python附带的标准库的名字冲突的情况（比如，你的代码中可能有一个叫做email.py的模块，它就会与标准库中同名的模块冲突）。\r\n\r\n这会导致一些很粗糙的问题，例如当你想加载某个库，这个库需要加载Python标准库里的某个模块，结果呢，因为你有一个与标准库里的模块同名的模块，这个包错误的将你的模块加载了进去，而不是加载Python标准库里的那个模块。这样一来就会有麻烦了。\r\n\r\n所以在给模块起名字的时候要小心了，得避免与Python标准库中的模块重名。相比起你提交一个“Python改进建议（Python Enhancement Proposal (PEP)）”去向上要求改一个标准库里包的名字，并得到批准来说，你把自己的那个模块重新改个名字要简单得多。\r\n\r\n### 常见错误9：不能区分Python 2和Python 3\r\n\r\n看下面这个文件foo.py：\r\n\r\n```python\r\nimport sys\r\n \r\ndef bar(i):\r\n    if i == 1:\r\n        raise KeyError(1)\r\n    if i == 2:\r\n        raise ValueError(2)\r\n \r\ndef bad():\r\n    e = None\r\n    try:\r\n        bar(int(sys.argv[1]))\r\n    except KeyError as e:\r\n        print('key error')\r\n    except ValueError as e:\r\n        print('value error')\r\n    print(e)\r\n \r\nbad()\r\n```\r\n\r\n在Python 2里，运行起来没有问题：\r\n\r\n```python\r\n$ python foo.py 1\r\nkey error\r\n1\r\n$ python foo.py 2\r\nvalue error\r\n2\r\n```\r\n\r\n但是如果拿到Python 3上面玩玩：\r\n\r\n```python\r\n$ python3 foo.py 1\r\nkey error\r\nTraceback (most recent call last):\r\n  File "foo.py", line 19, in <module>\r\n    bad()\r\n  File "foo.py", line 17, in bad\r\n    print(e)\r\nUnboundLocalError: local variable 'e' referenced before assignment\r\n```\r\n\r\n这是怎么回事？“问题”在于，在Python 3里，在except块的作用域以外，异常对象（exception object）是不能被访问的。（原因在于，如果不这样的话，Python会在内存的堆栈里保持一个引用链直到Python的垃圾处理将这些引用从内存中清除掉。更多的技术细节可以参考这里。）\r\n\r\n避免这样的问题可以这样做：保持在execpt块作用域以外对异常对象的引用，这样是可以访问的。下面是用这个办法对之前的例子做的改动，这样在Python 2和Python 3里面都运行都没有问题。\r\n\r\n```python\r\nimport sys\r\n \r\ndef bar(i):\r\n    if i == 1:\r\n        raise KeyError(1)\r\n    if i == 2:\r\n        raise ValueError(2)\r\n \r\ndef good():\r\n    exception = None\r\n    try:\r\n        bar(int(sys.argv[1]))\r\n    except KeyError as e:\r\n        exception = e\r\n        print('key error')\r\n    except ValueError as e:\r\n        exception = e\r\n        print('value error')\r\n    print(exception)\r\n \r\ngood()\r\n```\r\n\r\n在Py3k里面运行：\r\n\r\n```python\r\n$ python3 foo.py 1\r\nkey error\r\n1\r\n$ python3 foo.py 2\r\nvalue error\r\n2\r\n```\r\n\r\n耶！\r\n\r\n（顺带提一下，我们的“Python招聘指南”里讨论了从Python 2移植代码到Python 3时需要注意的其他重要的不同之处。）\r\n\r\n### 常见错误10：错误的使用__del__方法\r\n\r\n假设有一个文件mod.py中这样使用：\r\n\r\n```python\r\nimport foo\r\n \r\nclass Bar(object):\r\n        ...\r\n    def __del__(self):\r\n        foo.cleanup(self.myhandle)\r\n```\r\n然后试图在another_mod.py里这样：\r\n\r\n```python\r\nimport mod\r\nmybar = mod.Bar()\r\n```\r\n\r\n那么你会得到一个恶心的AttributeError异常。\r\n\r\n为啥呢？这是因为（参考[这里](https://mail.python.org/pipermail/python-bugs-list/2009-January/069209.html)），当解释器关闭时，模块所有的全局变量会被置为空（None）。结果便如上例所示，当__del__被调用时，名字foo已经被置为空了。\r\n\r\n使用atexit.register()可以解决这个问题。如此，当你的程序结束的时候（退出的时候），你的注册的处理程序会在解释器关闭之前处理。\r\n\r\n这样理解的话，对上面的mod.py可以做如下的修改：\r\n\r\n```python\r\nimport foo\r\nimport atexit\r\n \r\ndef cleanup(handle):\r\n    foo.cleanup(handle)\r\n \r\nclass Bar(object):\r\n    def __init__(self):\r\n        ...\r\n        atexit.register(cleanup, self.myhandle)\r\n```\r\n\r\n这样的实现方式为在程序正常终止时调用清除功能提供了一种干净可靠的办法。显然，需要foo.cleanup决定怎么处理绑定在self.myhandle上的对象，但你知道怎么做的。\r\n\r\n总结\r\n\r\nPython 是一门非常强大且灵活的语言，它众多的机制和范式能显著的提高生产效率。不过，和任何一款软件或者语言一样，对它的理解或认识不足的话，常常是弊大于利的，并会处于一种“一知半解”的状态。\r\n\r\n多熟悉Python的一些关键的细微的地方，比如（但不局限于）本文中提到的这些问题，可以帮你更好的使用这门语言的同时帮你避免一些常见的陷阱。\r\n\r\n感兴趣的话可以读一读这篇 [“Python面试指南（Insider’s Guide to Python Interviewing)”](http://www.toptal.com/python#hiring-guide)，了解一些能够区分Python程序员的面试题目。\r\n\r\n希望您能在本文学到有用的地方，并欢迎您的反馈。\r\n\r\n\r\n原文链接： [toptal](http://www.toptal.com/python/top-10-mistakes-that-python-programmers-make)     翻译： [伯乐在线 - datorhjaelten](http://blog.jobbole.com/author/datorhjaelten/)\r\n译文链接： [http://blog.jobbole.com/68256/](http://blog.jobbole.com/68256/)	31186.8452988123536	0	0	1	f	2014-06-22 03:33:58.446556	2014-06-25 00:00:15.860063	24
+24	20	2	Hello world	TEST	31187.6080747495871	3	0	1	f	2014-06-22 07:08:12.907269	2014-06-25 07:33:41.452281	151
+16	1	4	第一次买电子书	昨晚在多看上买了一本 池建强[《MacTalk·人生元编程》 ](http://www.duokan.com/book/40930)电子书， 花了 2.99 大洋，其实比较于在熟悉 Mac 操作上节省的时间，价格是相当值，今天随便翻了翻，感觉大部分内容都涉猎了。\r\n\r\n也推荐阮一峰的[博客文集](http://www.duokan.com/book/48508)\r\n\r\n第二本我要买的电子书是 [《黑客与画家》](http://www.duokan.com/book/246)，就等自己什么时候有时间能读完了。	31184.2868314246589	2	0	1	f	2014-06-20 15:49:21.064305	2014-06-25 08:48:31.492317	57
+28	1	5	本站性能测试	本站部署在旧金山的一台 512MB 内存，20GB SSD， 单 CPU 的 VPS 上。使用 [loadimpact](https://loadimpact.com/test/list) 对其免费简单测试了下\r\n\r\n\r\n\r\n- 使用新加坡节点，模拟 chrome，每个用户在线 5 min，可在线 150 位用户\r\n\r\n![Screenshot from 2014-06-22 20:47:01.png](/uploads/attachment/file/27/Screenshot_from_2014-06-22_20_47_01.png)\r\n\r\n\r\n![Screenshot from 2014-06-22 20:48:55.png](/uploads/attachment/file/28/Screenshot_from_2014-06-22_20_48_55.png)\r\n\r\n\r\n\r\n\r\n\r\n-  使用东京节点，模拟 IE, 每个用户在线 5 min， 可同时在线 100 位用户\r\n\r\n\r\n![Screenshot from 2014-06-22 20:55:24.png](/uploads/attachment/file/29/Screenshot_from_2014-06-22_20_55_24.png)\r\n\r\n\r\n![Screenshot from 2014-06-22 20:57:53.png](/uploads/attachment/file/30/Screenshot_from_2014-06-22_20_57_53.png)\r\n\r\n- Digitalocean 对资源的监控图\r\n\r\n\r\n![Screenshot from 2014-06-22 21:09:24.png](/uploads/attachment/file/31/Screenshot_from_2014-06-22_21_09_24.png)\r\n\r\n**本站目前注册用户刚刚20位，活跃的就更少了，大家努力啊～**	31187.6149917523326	0	0	1	f	2014-06-22 13:11:14.628855	2014-06-24 07:56:08.246863	64
+20	11	6	这个网站是怎么弄的？自己编写的然后部署搭起来的？	rt	31185.1755997942855	1	0	1	f	2014-06-21 06:41:41.990743	2014-06-23 23:52:04.234299	45
+25	1	4	gmail 邮箱中使用 markdown	如果你习惯用 Markdown 了，那么，装上 Chrome 插件 [Markdown Here] (https://chrome.google.com/webstore/detail/markdown-here/elifhakcjgalahccnjkneoccemfahfoa)，在 gmail 撰写邮件界面，写好后，轻轻一点，你的邮件就变成漂亮的文档了\r\n\r\n前后对照：\r\n\r\n![屏幕截图 2014-06-22 16.44.45.png](/uploads/attachment/file/23/_____2014-06-22_16.44.45.png)\r\n\r\n![屏幕截图 2014-06-22 16.44.51.png](/uploads/attachment/file/24/_____2014-06-22_16.44.51.png)	31187.2627751376676	1	0	1	f	2014-06-22 08:47:04.881195	2014-06-25 14:27:27.7869	150
+18	13	6	每天跟鹏哥聊会天，顿时充满能量	记得当年我去西安的时候，跟鹏哥一起爬华山。鹏哥当时对操作系统很感兴趣，谈起来的时候鹏哥说，刚上大学的时候什么都不懂，所以就认真的去学习，反复安装操作系统。当时我就很佩服鹏哥这这种劲头。昨晚鹏哥让我多在singflying发言，那就从今天开始啦，多多发言。	31185.6428777230103	6	0	1	f	2014-06-21 02:48:32.691268	2014-06-24 00:36:28.186841	97
+26	1	4	自由软件和开源协议	只是转载一张图，具体内容请前往[这里](http://macshuo.com/?p=984)\r\n\r\n\r\n![OPLicenses2.jpg](/uploads/attachment/file/25/OPLicenses2.jpg)\r\n\r\n显然 MIT 是最自由也是我在 github 上最容易见到的协议。\r\n拥抱开源～ 	31187.3308828187146	0	0	1	f	2014-06-22 09:38:09.726842	2014-06-24 02:31:27.410075	20
+19	13	6	这个网站介绍的书感觉还是比较好的	http://www.ifindbook.net/recommend/subcat/Python?page_no=1	31185.0654825896418	1	1	1	f	2014-06-21 05:19:06.716534	2014-06-23 15:11:19.15795	23
+32	20	5	这个域名花了多少钱？	我猜一年9.99刀	31189.2269610529293	2	0	1	f	2014-06-23 05:34:26.897577	2014-06-25 12:32:43.902584	53
+4	1	4	使用 shadowsocks 进行翻墙	一个多月前， 在我的博客 [dp90219.github.io](http://dp90219.github.io/) 写过一篇 [Use Shadowsocks to Cross GFW](http://dp90219.github.io/2014/05/05/use-shadownsocks-to-corss-GFW.html) 。 VPS 的 ip 我无责任地经常换，试过Digitalocean 在新加坡、旧金山、纽约的主机后发现还是旧金山的机房访问 google youtube twitter 等被墙站点快一点，所以我现在本站点主机上搭建了一个 shadowsocks server， 供本网站 Windows 用户使用， 我不保证哪天会把它停掉。\r\n\r\n具体做法就是:\r\n\r\n- 先下载[客户端](http://pan.baidu.com/s/1c0ckpt2)\r\n\r\n- 打开客户端\r\n![ss_usa.PNG](/uploads/attachment/file/6/ss_usa.PNG)\r\n\r\n- chrome浏览器添加插件SwitchySharp \r\n![sw1.png](/uploads/attachment/file/2/sw1.png)\r\n\r\n- 打开SwichySharp 选项， 在Import/Export选项卡Restore from File中导入我的SwichProxy[配置文件](http://pan.baidu.com/s/1mgDhE8g)\r\n![switchy.PNG](/uploads/attachment/file/3/switchy.PNG)\r\n\r\n- 可选择在以下两种模式下切换，绿框标中的模式会将所有流量导向server端，一般情况下请选择Auto Switch Mode\r\n![swichy1.png](/uploads/attachment/file/8/swichy1.png)\r\n\r\n\r\n\r\nOK， 现在可以访问一些被墙的网站了。我的twitter  [liupeng6](https://twitter.com/liupeng6)， 求关注。\r\n\r\n**一切从科学上网开始**\r\n\r\n在这个月初前后， google 在中国仅存的大部分服务都被 down 掉了， goagent 也不再稳定，对有外网需求的同学建议采用上面的方法，我一直在用，看 youtube 会有点卡， 刷 twiiter 看 gmail 还是可以的	31178.6432512192914	6	0	1	f	2014-06-17 11:18:49.498601	2014-06-25 14:14:14.061968	65
+33	20	5	为啥本站支持markdown 格式？	有没有在线的编辑器可以不用输语法的？一排小按钮支持所见即所得的那种。	31188.9373382172016	1	0	1	f	2014-06-23 05:43:00.219774	2014-06-25 14:27:12.782912	25
+34	20	5	托管费多少钱？	一年60刀？	31188.9416444984927	1	0	1	f	2014-06-23 05:46:14.002432	2014-06-24 22:48:54.105819	17
+35	20	5	[建议]浏览次数统计，可不可以每个IP24小时算一次	否则的话，狂按一小时F5，容易刷爆。比如现在这样。	31188.9456676984009	1	0	1	f	2014-06-23 05:49:15.046428	2014-06-25 07:40:45.295011	48
+\.
+
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+--
+
+SELECT pg_catalog.setval('topics_id_seq', 37, true);
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: deploy
+--
+
+COPY users (id, name, email, username, password_digest, bio, avatar, locale, locked_at, created_at, updated_at, confirmed, send_comment_email, send_comment_web, send_mention_email, send_mention_web) FROM stdin;
+18	李娟	juan.li@siat.ac.cn	juan-li	$2a$10$T9flNHI3x1QqLJ/a0Y5PBOhTGwKXQrRr771pSzudpMECJFBSZnMRe	\N	\N	zh-CN	\N	2014-06-21 13:43:31.953146	2014-06-21 14:19:19.864673	t	t	t	t	t
+19	耿文慧	294499487@qq.com	wenhui4895	$2a$10$XixbZfU3tvRtmxjvdsDFmexKLeQ9RpJphrwawbavyNh02LZ3TC6we	\N	\N	zh-CN	\N	2014-06-22 02:19:14.970148	2014-06-22 02:19:14.970148	f	t	t	t	t
+3	along	fengluuo@126.com	along	$2a$10$0RkX4vFlNW.L1QoddAfhz.bP5w0mJXRnkoKBpjFuF7JY0CByqAJkK	\N	\N	zh-CN	\N	2014-06-17 09:36:04.232649	2014-06-17 09:36:42.560073	t	t	t	t	t
+4	LJ	731268054@qq.com	LJ	$2a$10$wCXqlQ0HsXe4DEPpV6RPZ.ZOL5N7QgI33a2Yy5y1D3/g3CIapqXBi	\N	\N	en	\N	2014-06-17 09:39:18.12186	2014-06-17 09:39:18.12186	f	t	t	t	t
+5	盛丁	369430825@qq.com	sd	$2a$10$YObrwUM1x.0El646g0Anj.pcFZ04G8XW/3TpNltM0PlMFpI19WiK6		Koala.jpg	zh-CN	\N	2014-06-17 09:40:27.372469	2014-06-17 09:42:04.982489	t	t	t	t	t
+20	张大龙	owl@live.cn	owl	$2a$10$iDxqw6jGUFAx.R.PEzSiC.WIjZkGY/S0mRooDvzqokirGLo5O.Bg2	\N	\N	zh-CN	\N	2014-06-22 07:06:03.112915	2014-06-22 07:07:16.998989	t	t	t	t	t
+1	刘鹏	dp90219@gmail.com	liupeng	$2a$10$mxAi9LF7G1szruFUaItFDewXu8XQuqv2hrSVrdFrSoMEic12miWRK	devoted to being a full-stack web developer	\N	zh-CN	\N	2014-06-17 08:32:18.000697	2014-06-22 09:08:44.298823	t	f	t	f	t
+21	赵松涛	zst0827@126.com	zst	$2a$10$QHjFRI0ulSUiwaFj9lF4iO4ZUm48dIab54RtCyfAcmQ9NJYroidcW	\N	\N	zh-CN	\N	2014-06-23 00:43:09.305007	2014-06-23 00:43:09.305007	f	t	t	t	t
+8	耿畅	1225818452@qq.com	xiaomi-hat	$2a$10$m7I3J7oQGRsb9..T4QwNLucfVpvhIxo.TJY0.s0DhcyZbLRGWwM/2	\N	\N	zh-CN	\N	2014-06-17 12:19:10.793104	2014-06-17 12:19:10.793104	f	t	t	t	t
+7	槛外人	admin@nolie.me	a	$2a$10$VmANtz/FrTC.yIJ3hvw.nur89e35A6QIqX8JMFCmwmkRa8NhmGQJW		xiaowanzi.jpg	zh-CN	\N	2014-06-17 12:18:14.455454	2014-06-17 12:35:39.291321	t	t	t	t	t
+10	martian	1176710853@qq.com	martian	$2a$10$.firGQYmQrcfSuw2Oo6D..lQurjC0oUQI4PRcULjPs2ZKJSxhr4Qy	\N	\N	zh-CN	\N	2014-06-17 13:14:12.614095	2014-06-17 13:14:12.614095	f	t	t	t	t
+9	613最角落	zjsxzong89@gmail.com	zong89	$2a$10$zV0RaW9b9dXtgsfTkxFME.47mXPAYcFuLOtMj.rvBbd1rbZaeMna.	\N	\N	zh-CN	\N	2014-06-17 13:05:28.069589	2014-06-17 13:20:14.500478	t	t	t	t	t
+22	刘老爹	rockgone@163.com	GreatLiu	$2a$10$urccBvbF25ClaTeo4y4gtOpPCGgmo5jz1umgmnzDsZvcNMgg4ZGkO		3c031ce9a3dc035a9d7d19afb4e7d8bb.jpeg	zh-CN	\N	2014-06-23 00:53:39.587601	2014-06-24 01:08:01.68669	t	f	t	f	t
+2	zigui	liu219zigui@163.com	zigui	$2a$10$vJL2I0NEVVRFoOuKuX3uk.bRjpo.MeZqaq/nzOjp/9kAClyrA0rl6	\N	\N	en	\N	2014-06-17 08:58:45.527627	2014-06-17 15:23:17.590602	t	t	t	t	t
+12	漠阳	lwxxjtu@163.com	ilsmile	$2a$10$0rPm/iqEUNVMYJV3gJm.WOEHgwUX2u8YszzLKBeSq/cnbgSm1jhVa	\N	\N	zh-CN	\N	2014-06-17 15:40:56.346857	2014-06-17 15:50:42.989442	t	t	t	t	t
+13	DumbBird	DumbBird1989@gmail.com	DumbBird	$2a$10$uiLpwym.A0ztm254JXjZm.V9Wk1vaBwpujbII8F0L4FYfCPbjPATe	\N	\N	zh-CN	\N	2014-06-18 03:16:41.972043	2014-06-18 03:17:18.766841	t	t	t	t	t
+14	阿依纳伐	zf20081989@163.com	guanzhongdaoke	$2a$10$w8E2nX/NzsK0nudOGiU5JObqW.TOgqQKhtBCLy8SzeDViG16PxXqi	\N	\N	zh-CN	\N	2014-06-18 06:34:20.43993	2014-06-18 06:34:45.761186	t	t	t	t	t
+15	贾冰鑫	jiabingxin0923@163.com	jiabingxin	$2a$10$gE5coPH.7C6.C8xTBI0CGe/ZF1oOLJ20ctkkknfY.hpV0HwUKK2vO	\N	\N	en	\N	2014-06-18 13:23:02.790813	2014-06-18 13:23:56.780854	t	t	t	t	t
+16	rueko	1046907521@qq.com	rueko	$2a$10$exVY0RW5RD925PvtswP9GO3C2r4miYIxH06kzUHHUwrL3um/zShzm	\N	\N	zh-CN	\N	2014-06-19 01:39:13.143415	2014-06-19 01:39:13.143415	f	t	t	t	t
+6	章江铭	zjmzjm_love@163.com	season	$2a$10$x/BcNiaan.DDdRRcgZrh3.I8NOgdxsvV8pBEXiRrmY/lEshuUPhxS	\N	\N	zh-CN	\N	2014-06-17 11:11:33.172462	2014-06-19 09:57:00.901503	t	t	t	t	t
+11	刘泽民	liuzeminbyh@126.com	shuaishuai	$2a$10$zzVNP3Hpt7dT2ayEcC7tzewc9MyA5EJjDQtNRilcs/SjswUNpZa3C			zh-CN	\N	2014-06-17 13:56:15.36046	2014-06-21 06:43:01.038403	t	t	t	t	t
+17	白安文	970418975@qq.com	baw5353452	$2a$10$5kNIfoA8Gfl9pCqcpPDL5enklQFozpTH4026smAR7u7ARscKHcMqS	\N	\N	zh-CN	\N	2014-06-21 13:05:26.290864	2014-06-21 13:05:26.290864	f	t	t	t	t
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+--
+
+SELECT pg_catalog.setval('users_id_seq', 22, true);
+
+
+--
+-- Name: attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy; Tablespace: 
+--
+
+ALTER TABLE ONLY attachments
+    ADD CONSTRAINT attachments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy; Tablespace: 
+--
+
+ALTER TABLE ONLY categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy; Tablespace: 
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: likes_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy; Tablespace: 
+--
+
+ALTER TABLE ONLY likes
+    ADD CONSTRAINT likes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy; Tablespace: 
+--
+
+ALTER TABLE ONLY notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy; Tablespace: 
+--
+
+ALTER TABLE ONLY subscriptions
+    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: topics_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy; Tablespace: 
+--
+
+ALTER TABLE ONLY topics
+    ADD CONSTRAINT topics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: deploy; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_attachments_on_user_id; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_attachments_on_user_id ON attachments USING btree (user_id);
+
+
+--
+-- Name: index_categories_on_lowercase_slug; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_categories_on_lowercase_slug ON categories USING btree (lower((slug)::text));
+
+
+--
+-- Name: index_comments_on_commentable_id_and_commentable_type; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_commentable_id_and_commentable_type ON comments USING btree (commentable_id, commentable_type);
+
+
+--
+-- Name: index_comments_on_user_id; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
+
+
+--
+-- Name: index_likes_on_likeable_id_and_likeable_type; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_likes_on_likeable_id_and_likeable_type ON likes USING btree (likeable_id, likeable_type);
+
+
+--
+-- Name: index_likes_on_user_id; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_likes_on_user_id ON likes USING btree (user_id);
+
+
+--
+-- Name: index_notifications_on_subject_id_and_subject_type; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_subject_id_and_subject_type ON notifications USING btree (subject_id, subject_type);
+
+
+--
+-- Name: index_notifications_on_user_id; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_user_id ON notifications USING btree (user_id);
+
+
+--
+-- Name: index_subscriptions_on_subscribable_id_and_subscribable_type; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_subscriptions_on_subscribable_id_and_subscribable_type ON subscriptions USING btree (subscribable_id, subscribable_type);
+
+
+--
+-- Name: index_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_subscriptions_on_user_id ON subscriptions USING btree (user_id);
+
+
+--
+-- Name: index_topics_on_category_id; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_topics_on_category_id ON topics USING btree (category_id);
+
+
+--
+-- Name: index_topics_on_hot; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_topics_on_hot ON topics USING btree (hot);
+
+
+--
+-- Name: index_topics_on_user_id; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE INDEX index_topics_on_user_id ON topics USING btree (user_id);
+
+
+--
+-- Name: index_users_on_lowercase_email; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_lowercase_email ON users USING btree (lower((email)::text));
+
+
+--
+-- Name: index_users_on_lowercase_username; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_lowercase_username ON users USING btree (lower((username)::text));
+
+
+--
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: deploy; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

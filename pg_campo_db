@@ -1,0 +1,751 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: attachments; Type: TABLE; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE TABLE attachments (
+    id integer NOT NULL,
+    user_id integer,
+    file character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.attachments OWNER TO vagrant;
+
+--
+-- Name: attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+--
+
+CREATE SEQUENCE attachments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.attachments_id_seq OWNER TO vagrant;
+
+--
+-- Name: attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+--
+
+ALTER SEQUENCE attachments_id_seq OWNED BY attachments.id;
+
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE TABLE categories (
+    id integer NOT NULL,
+    name character varying(255),
+    slug character varying(255),
+    description text,
+    topics_count integer DEFAULT 0,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.categories OWNER TO vagrant;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+--
+
+CREATE SEQUENCE categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_id_seq OWNER TO vagrant;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+--
+
+ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
+
+
+--
+-- Name: comments; Type: TABLE; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE TABLE comments (
+    id integer NOT NULL,
+    user_id integer,
+    commentable_id integer,
+    commentable_type character varying(255),
+    body text,
+    likes_count integer DEFAULT 0,
+    trashed boolean DEFAULT false,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.comments OWNER TO vagrant;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+--
+
+CREATE SEQUENCE comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.comments_id_seq OWNER TO vagrant;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+--
+
+ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
+
+
+--
+-- Name: likes; Type: TABLE; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE TABLE likes (
+    id integer NOT NULL,
+    user_id integer,
+    likeable_id integer,
+    likeable_type character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.likes OWNER TO vagrant;
+
+--
+-- Name: likes_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+--
+
+CREATE SEQUENCE likes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.likes_id_seq OWNER TO vagrant;
+
+--
+-- Name: likes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+--
+
+ALTER SEQUENCE likes_id_seq OWNED BY likes.id;
+
+
+--
+-- Name: notifications; Type: TABLE; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE TABLE notifications (
+    id integer NOT NULL,
+    user_id integer,
+    subject_id integer,
+    subject_type character varying(255),
+    name character varying(255),
+    read boolean DEFAULT false,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.notifications OWNER TO vagrant;
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+--
+
+CREATE SEQUENCE notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.notifications_id_seq OWNER TO vagrant;
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+--
+
+ALTER SEQUENCE notifications_id_seq OWNED BY notifications.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE TABLE schema_migrations (
+    version character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.schema_migrations OWNER TO vagrant;
+
+--
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE TABLE subscriptions (
+    id integer NOT NULL,
+    user_id integer,
+    subscribable_id integer,
+    subscribable_type character varying(255),
+    status integer DEFAULT 0,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.subscriptions OWNER TO vagrant;
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+--
+
+CREATE SEQUENCE subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.subscriptions_id_seq OWNER TO vagrant;
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+--
+
+ALTER SEQUENCE subscriptions_id_seq OWNED BY subscriptions.id;
+
+
+--
+-- Name: topics; Type: TABLE; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE TABLE topics (
+    id integer NOT NULL,
+    user_id integer,
+    category_id integer,
+    title character varying(255),
+    body text,
+    hot double precision DEFAULT 0.0,
+    comments_count integer DEFAULT 0,
+    likes_count integer DEFAULT 0,
+    subscriptions_count integer DEFAULT 0,
+    trashed boolean DEFAULT false,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    views_count integer DEFAULT 0
+);
+
+
+ALTER TABLE public.topics OWNER TO vagrant;
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+--
+
+CREATE SEQUENCE topics_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.topics_id_seq OWNER TO vagrant;
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+--
+
+ALTER SEQUENCE topics_id_seq OWNED BY topics.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    name character varying(255),
+    email character varying(255),
+    username character varying(255),
+    password_digest character varying(255),
+    bio text,
+    avatar character varying(255),
+    locale character varying(255),
+    locked_at timestamp without time zone,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    confirmed boolean DEFAULT false,
+    send_comment_email boolean DEFAULT true,
+    send_comment_web boolean DEFAULT true,
+    send_mention_email boolean DEFAULT true,
+    send_mention_web boolean DEFAULT true
+);
+
+
+ALTER TABLE public.users OWNER TO vagrant;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: vagrant
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO vagrant;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vagrant
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vagrant
+--
+
+ALTER TABLE ONLY attachments ALTER COLUMN id SET DEFAULT nextval('attachments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vagrant
+--
+
+ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vagrant
+--
+
+ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vagrant
+--
+
+ALTER TABLE ONLY likes ALTER COLUMN id SET DEFAULT nextval('likes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vagrant
+--
+
+ALTER TABLE ONLY notifications ALTER COLUMN id SET DEFAULT nextval('notifications_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vagrant
+--
+
+ALTER TABLE ONLY subscriptions ALTER COLUMN id SET DEFAULT nextval('subscriptions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vagrant
+--
+
+ALTER TABLE ONLY topics ALTER COLUMN id SET DEFAULT nextval('topics_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: vagrant
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Data for Name: attachments; Type: TABLE DATA; Schema: public; Owner: vagrant
+--
+
+COPY attachments (id, user_id, file, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: attachments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+--
+
+SELECT pg_catalog.setval('attachments_id_seq', 1, false);
+
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: vagrant
+--
+
+COPY categories (id, name, slug, description, topics_count, created_at, updated_at) FROM stdin;
+1	Category One	c1	Category One, just for test	0	2014-06-24 04:53:03.647633	2014-06-24 04:53:03.647633
+\.
+
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+--
+
+SELECT pg_catalog.setval('categories_id_seq', 1, true);
+
+
+--
+-- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: vagrant
+--
+
+COPY comments (id, user_id, commentable_id, commentable_type, body, likes_count, trashed, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+--
+
+SELECT pg_catalog.setval('comments_id_seq', 1, false);
+
+
+--
+-- Data for Name: likes; Type: TABLE DATA; Schema: public; Owner: vagrant
+--
+
+COPY likes (id, user_id, likeable_id, likeable_type, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: likes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+--
+
+SELECT pg_catalog.setval('likes_id_seq', 1, false);
+
+
+--
+-- Data for Name: notifications; Type: TABLE DATA; Schema: public; Owner: vagrant
+--
+
+COPY notifications (id, user_id, subject_id, subject_type, name, read, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+--
+
+SELECT pg_catalog.setval('notifications_id_seq', 1, false);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: vagrant
+--
+
+COPY schema_migrations (version) FROM stdin;
+20140103111354
+20140104125105
+20140121065043
+20140130122905
+20140204053314
+20140204164212
+20140208060708
+20140218070616
+20140310070632
+20140405074043
+20140412065000
+20140412113810
+20140618120041
+\.
+
+
+--
+-- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: vagrant
+--
+
+COPY subscriptions (id, user_id, subscribable_id, subscribable_type, status, created_at, updated_at) FROM stdin;
+1	1	1	Topic	0	2014-06-25 14:09:10.574726	2014-06-25 14:09:10.574726
+\.
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+--
+
+SELECT pg_catalog.setval('subscriptions_id_seq', 1, true);
+
+
+--
+-- Data for Name: topics; Type: TABLE DATA; Schema: public; Owner: vagrant
+--
+
+COPY topics (id, user_id, category_id, title, body, hot, comments_count, likes_count, subscriptions_count, trashed, created_at, updated_at, views_count) FROM stdin;
+1	1	\N	Test	Test content	31193.4522339447612	0	0	1	f	2014-06-25 14:09:10.527514	2014-06-25 14:09:10.761807	1
+\.
+
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+--
+
+SELECT pg_catalog.setval('topics_id_seq', 1, true);
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: vagrant
+--
+
+COPY users (id, name, email, username, password_digest, bio, avatar, locale, locked_at, created_at, updated_at, confirmed, send_comment_email, send_comment_web, send_mention_email, send_mention_web) FROM stdin;
+1	admin	admin@example.com	admin	$2a$10$iNtvdZbN7TvVQAqHyXhhvuP.VDlEY3/lcmI5.Hq4NarzNtkZQiUMy		\N	en	\N	2014-06-24 04:51:51.76547	2014-06-24 04:52:14.291387	t	t	t	t	t
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vagrant
+--
+
+SELECT pg_catalog.setval('users_id_seq', 1, true);
+
+
+--
+-- Name: attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+ALTER TABLE ONLY attachments
+    ADD CONSTRAINT attachments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+ALTER TABLE ONLY categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: likes_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+ALTER TABLE ONLY likes
+    ADD CONSTRAINT likes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+ALTER TABLE ONLY notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+ALTER TABLE ONLY subscriptions
+    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: topics_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+ALTER TABLE ONLY topics
+    ADD CONSTRAINT topics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_attachments_on_user_id; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_attachments_on_user_id ON attachments USING btree (user_id);
+
+
+--
+-- Name: index_categories_on_lowercase_slug; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_categories_on_lowercase_slug ON categories USING btree (lower((slug)::text));
+
+
+--
+-- Name: index_comments_on_commentable_id_and_commentable_type; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_commentable_id_and_commentable_type ON comments USING btree (commentable_id, commentable_type);
+
+
+--
+-- Name: index_comments_on_user_id; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_comments_on_user_id ON comments USING btree (user_id);
+
+
+--
+-- Name: index_likes_on_likeable_id_and_likeable_type; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_likes_on_likeable_id_and_likeable_type ON likes USING btree (likeable_id, likeable_type);
+
+
+--
+-- Name: index_likes_on_user_id; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_likes_on_user_id ON likes USING btree (user_id);
+
+
+--
+-- Name: index_notifications_on_subject_id_and_subject_type; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_subject_id_and_subject_type ON notifications USING btree (subject_id, subject_type);
+
+
+--
+-- Name: index_notifications_on_user_id; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_notifications_on_user_id ON notifications USING btree (user_id);
+
+
+--
+-- Name: index_subscriptions_on_subscribable_id_and_subscribable_type; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_subscriptions_on_subscribable_id_and_subscribable_type ON subscriptions USING btree (subscribable_id, subscribable_type);
+
+
+--
+-- Name: index_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_subscriptions_on_user_id ON subscriptions USING btree (user_id);
+
+
+--
+-- Name: index_topics_on_category_id; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_topics_on_category_id ON topics USING btree (category_id);
+
+
+--
+-- Name: index_topics_on_hot; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_topics_on_hot ON topics USING btree (hot);
+
+
+--
+-- Name: index_topics_on_user_id; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE INDEX index_topics_on_user_id ON topics USING btree (user_id);
+
+
+--
+-- Name: index_users_on_lowercase_email; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_lowercase_email ON users USING btree (lower((email)::text));
+
+
+--
+-- Name: index_users_on_lowercase_username; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_lowercase_username ON users USING btree (lower((username)::text));
+
+
+--
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: vagrant; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

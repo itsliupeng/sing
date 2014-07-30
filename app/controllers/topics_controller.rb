@@ -1,6 +1,7 @@
 class TopicsController < ApplicationController
   before_action :login_required, :no_locked_required, except: [:index, :show, :search]
   before_action :find_topic, only: [:edit, :update, :trash]
+  # impressionist :action => [:show], :unique => [:impressionable_type, :impressionable_id, :session_hash]
 
   def index
     @topics = Topic.includes(:user, :category).page(params[:page])
@@ -42,6 +43,8 @@ class TopicsController < ApplicationController
   def show
     @topic = Topic.find params[:id]
     @topic.increment_views_count
+
+    impressionist @topic
 
     if params[:comment_id] and comment = @topic.comments.find_by(id: params.delete(:comment_id))
       params[:page] = comment.page

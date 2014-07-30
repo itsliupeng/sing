@@ -6,7 +6,7 @@
       .list-group-item-heading
         b = topic.title
         span.badge
-          = topic.views_count
+          = topic.impressionist_count(:filter => :session_hash)
       .text-muted
         = topic.user.name
         = ' · '
