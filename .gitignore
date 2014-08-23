@@ -29,3 +29,7 @@
 # Ignore deploy config.
 /config/deploy
 tags
+
+# dbfile
+singflying_db_*
+
