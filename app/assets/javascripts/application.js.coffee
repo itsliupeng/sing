@@ -35,3 +35,9 @@ $(document).scroll ->
   else
     $('#arrow-up').addClass('show')
 
+
+$(document).on 'page:change', ->
+  for link in document.links
+    if link.host != location.host
+      link.target = "_blank"
+
