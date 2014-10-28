@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
 
+  before_action  :log_crawler
+
   after_filter :user_activity
 
 
@@ -110,5 +112,9 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = current_user.try(:locale) || http_accept_language.compatible_language_from(I18n.available_locales) || I18n.default_locale
+  end
+
+  def log_crawler
+    logger.info "HTTP_USER_AGENT #{request.env["HTTP_USER_AGENT"]}"
   end
 end
