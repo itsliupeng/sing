@@ -42,9 +42,13 @@ class TopicsController < ApplicationController
 
   def show
     @topic = Topic.find params[:id]
-    @topic.increment_views_count
+
+    # deprecated
+    # @topic.increment_views_count
 
     impressionist @topic
+    
+    @topic.update_hot
 
     if params[:comment_id] and comment = @topic.comments.find_by(id: params.delete(:comment_id))
       params[:page] = comment.page

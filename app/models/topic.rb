@@ -35,7 +35,7 @@ class Topic < ActiveRecord::Base
   def calculate_hot
     # order = Math.log10([comments_count+1, 1].max)
     # order + created_at.to_f / 45000
-    order = (Time.now.to_f - 1.month.ago.to_f) * comments_count + created_at.to_f
+    order = (Time.now.to_f - 1.month.ago.to_f) * (comments_count*3 + impressionist_count(filter: :session_hash)) + created_at.to_f
     order/1000000
   end
 
@@ -70,6 +70,7 @@ class Topic < ActiveRecord::Base
     ).limit(num).records.to_a rescue []
   end
 
+  # deprecated
   def increment_views_count
     self.views_count += 1
     self.save
