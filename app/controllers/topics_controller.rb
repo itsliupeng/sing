@@ -25,20 +25,25 @@ class TopicsController < ApplicationController
   end
 
   def search
-    @topics = Topic.search(
-      query: {
-        multi_match: {
-          query: params[:q].to_s,
-          fields: ['title', 'body']
-        }
-      },
-      filter: {
-        term: {
-          trashed: false
-        }
-      }
-    ).page(params[:page]).records
+    keywords = params[:q].to_s || ''
+    keywords.gsub!('#', '%23')
+    redirect_to "https://www.google.com/#q=#{keywords}%20site%3Asingflying.com"
   end
+  # def search
+  #   @topics = Topic.search(
+  #     query: {
+  #       multi_match: {
+  #         query: params[:q].to_s,
+  #         fields: ['title', 'body']
+  #       }
+  #     },
+  #     filter: {
+  #       term: {
+  #         trashed: false
+  #       }
+  #     }
+  #   ).page(params[:page]).records
+  # end
 
   def show
     @topic = Topic.find params[:id]
