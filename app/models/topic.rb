@@ -34,7 +34,8 @@ class Topic < ActiveRecord::Base
 
   def calculate_hot
     order = Math.log10([comments_count, 1].max)
-    order + created_at.to_f / 45000
+    # order + created_at.to_f / 45000
+    order + created_at.to_f / 450000
   end
 
   def update_hot
