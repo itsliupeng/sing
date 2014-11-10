@@ -1,4 +1,4 @@
-source 'http://ruby.taobao.org'
+source 'https://rubygems.org'
 
 gem 'rails', '4.1.1'
 
@@ -112,3 +112,6 @@ end
 group :development, :test do
   gem 'factory_girl_rails', '~> 4.3.0'
 end
+
+
+# gem 'newrelic_rpm'
