@@ -32,7 +32,7 @@ Rails.application.configure do
 
   # LiveReload, user localhost because livereload can't listen file changed
   # event in vagrant sync folder, so run `guard start` in host machine.
-  config.middleware.use Rack::LiveReload, host: 'localhost'
+  # config.middleware.use Rack::LiveReload, host: 'localhost'
 end
 
 # Slim pretty output
