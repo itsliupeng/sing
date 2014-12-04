@@ -9,12 +9,12 @@ sudo apt-get update
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server memcached git-core nodejs imagemagick postfix
 
 # Install Elasticsearch
-wget -O - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
-sudo bash -c "echo 'deb http://packages.elasticsearch.org/elasticsearch/1.0/debian stable main' > /etc/apt/sources.list.d/elasticsearch.list"
-sudo apt-get update
-sudo apt-get install -y openjdk-7-jre-headless elasticsearch
-sudo update-rc.d elasticsearch defaults
-sudo service elasticsearch start
+# wget -O - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | sudo apt-key add -
+# sudo bash -c "echo 'deb http://packages.elasticsearch.org/elasticsearch/1.0/debian stable main' > /etc/apt/sources.list.d/elasticsearch.list"
+# sudo apt-get update
+# sudo apt-get install -y openjdk-7-jre-headless elasticsearch
+# sudo update-rc.d elasticsearch defaults
+# sudo service elasticsearch start
 
 # Install PostgreSQL
 sudo apt-get install -y postgresql libpq-dev
@@ -29,8 +29,7 @@ echo "source ~/.rvm/scripts/rvm" >> ~/.bashrc
 rvm install 2.1.2
 rvm use 2.1.2 --default
 ruby -v
-echo "gem: --no-ri --no-rdoc" > ~/.gemrc
-
+c
 
 # nignx
 gpg --keyserver keyserver.ubuntu.com --recv-keys 561F9B9CAC40B2F7
