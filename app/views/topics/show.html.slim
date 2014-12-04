@@ -26,8 +26,9 @@
                         = ' · '
                         a href=categoried_topics_path(category_id: @topic.category.slug)
                           = @topic.category.name
-                    article.comment-body
-                      = markdown_format @topic.body
+                    - if login?
+                      article.comment-body
+                        = markdown_format @topic.body
                     .list-group-item-actions.clearfix
                       .pull-right
                         a.btn id="like-for-topic-#{@topic.id}" href=topic_like_path(@topic) data-remote="true" data-method="post"
