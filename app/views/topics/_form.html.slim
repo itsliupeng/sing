@@ -27,6 +27,10 @@
     a.btn.btn-default href=topic_path(@topic) tabIndex="5"
       = t '.cancel'
 
+  .pull-right.checkbox
+    = f.check_box :visible
+    = '是否需要登陆阅读'
+
 - form_id = @topic.new_record? ? 'new_topic' : "edit_topic_#{@topic.id}"
 
 javascript:

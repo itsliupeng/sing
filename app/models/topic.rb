@@ -75,4 +75,9 @@ class Topic < ActiveRecord::Base
     self.views_count += 1
     self.save
   end
+
+  def visible?
+    visible
+  end
+
 end

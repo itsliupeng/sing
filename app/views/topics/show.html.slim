@@ -26,9 +26,15 @@
                         = ' · '
                         a href=categoried_topics_path(category_id: @topic.category.slug)
                           = @topic.category.name
-                    - if login?
-                      article.comment-body
-                        = markdown_format @topic.body
+                    article.comment-body
+                      - if @topic.visible?
+                          = markdown_format @topic.body
+                      - else
+                        - if login?
+                            = markdown_format @topic.body
+                        - else
+                            = '本内容只对登陆用户开发，请先'
+                            <a href="/login"> 登陆</a>
                     .list-group-item-actions.clearfix
                       .pull-right
                         a.btn id="like-for-topic-#{@topic.id}" href=topic_like_path(@topic) data-remote="true" data-method="post"

@@ -300,7 +300,8 @@ CREATE TABLE topics (
     trashed boolean DEFAULT false,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    views_count integer DEFAULT 0
+    views_count integer DEFAULT 0,
+    visible boolean DEFAULT false
 );
 
 
@@ -702,4 +703,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140412113810');
 INSERT INTO schema_migrations (version) VALUES ('20140618120041');
 
 INSERT INTO schema_migrations (version) VALUES ('20140703134722');
+
+INSERT INTO schema_migrations (version) VALUES ('20141204152911');
 
