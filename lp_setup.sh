@@ -23,3 +23,8 @@ sudo su postgres -c "createuser -d -R -S $USER"
 # ruby 
 curl -sSL https://get.rvm.io | bash -s master && source ~/.rvm/scripts/rvm && echo "source ~/.rvm/scripts/rvm" >> ~/.bashrc
 rvm install 2.1
+echo "gem: --no-rdoc --no-ri " >> ~/.gemrc
+gem install rails
+
+#
+
