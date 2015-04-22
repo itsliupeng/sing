@@ -4,10 +4,9 @@ GIT
   branch: reset-scroll-position
   specs:
     turbolinks (2.2.2)
-      coffee-rails
 
 GEM
-  remote: https://rubygems.org/
+  remote: https://ruby.taobao.org/
   specs:
     actionmailer (4.1.1)
       actionpack (= 4.1.1)
@@ -163,9 +162,10 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     netrc (0.9.0)
+    newrelic_rpm (3.11.2.286)
     nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
-    pg (0.17.1)
+    pg (0.18.1)
     polyglot (0.3.5)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -302,6 +302,7 @@ DEPENDENCIES
   jquery-rails
   kaminari (~> 0.15.1)
   mini_magick (~> 3.7.0)
+  newrelic_rpm
   nokogiri (~> 1.6.1)
   pg
   qiniu
