@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'https://ruby.taobao.org'
 
 gem 'rails', '4.1.1'
 
@@ -114,4 +114,4 @@ group :development, :test do
 end
 
 
-# gem 'newrelic_rpm'
+gem 'newrelic_rpm'
